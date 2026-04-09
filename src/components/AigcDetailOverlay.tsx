@@ -1,4 +1,3 @@
-import { AigcStepFullModels } from "./AigcStepFullModels";
 import { ProjectDetailOverlay } from "./ProjectDetailOverlay";
 
 type AigcDetailOverlayProps = {
@@ -29,8 +28,6 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           </p>
         </>
       }
-    >
-      <AigcStepFullModels />
-    </ProjectDetailOverlay>
+    />
   );
 }

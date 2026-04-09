@@ -22,7 +22,7 @@ const HOME_VIDEO_REV = "4";
 /** 文字揭示阶段滚动距离：滚完后再离开首屏 */
 const HERO_REVEAL_SCROLL_PX = 760;
 /** 初始额外下移量：首屏先露出后两行 */
-const HERO_REVEAL_FROM_Y = 300;
+const HERO_REVEAL_FROM_Y = 380;
 
 /** 跑马灯单行重复次数，避免轨道留白 */
 const CASE_SKILLS_SEGMENT_REPEAT = 14;
@@ -163,7 +163,6 @@ export default function App() {
     setDigitalTwinDetailOpen(false);
     setAigcDetailOpen(true);
   }, []);
-
   useHeroShowreelLoop(heroVideoRef);
 
   useLayoutEffect(() => {
@@ -171,9 +170,12 @@ export default function App() {
     if (!main || prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
+      const hero = main.querySelector<HTMLElement>(".hero");
       const heroTextTrack = main.querySelector<HTMLElement>(".hero-text__track");
-      if (!heroTextTrack) return;
+      if (!hero || !heroTextTrack) return;
 
+      // Pin entire hero section so the whole thing (video + text) moves together
+      // Pin spacing handled by GSAP to avoid卡顿 when scrolling back
       gsap.fromTo(
         heroTextTrack,
         { y: HERO_REVEAL_FROM_Y },
@@ -184,10 +186,10 @@ export default function App() {
             trigger: ".hero",
             start: "top top",
             end: `+=${HERO_REVEAL_SCROLL_PX}`,
-            scrub: 0.35,
-            pin: true,
+            scrub: true,
+            pin: hero,
             pinSpacing: true,
-            pinType: "fixed",
+            pinType: "transform",
             anticipatePin: 1,
             invalidateOnRefresh: true,
             fastScrollEnd: false,

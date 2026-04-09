@@ -132,8 +132,8 @@ body {
 
 .hero-bg {
   position: absolute;
-  /* 向外扩展一圈，吸收回滚时的子像素缝隙 */
-  inset: -3px 0 -3px 0;
+  /* 向外扩展更多，确保滚动后视频顶部仍可见 */
+  inset: -80px 0 -3px 0;
   z-index: 0;
   background-color: #0a0a0c;
   overflow: hidden;
@@ -141,10 +141,10 @@ body {
 
 .hero-bg__video {
   position: absolute;
-  top: -3px;
+  top: -80px;
   left: 0;
   width: 100%;
-  height: calc(100% + 6px);
+  height: calc(100% + 83px);
   z-index: 0;
   object-fit: cover;
   object-position: center top;
@@ -176,13 +176,13 @@ body {
   padding: 0;
 }
 
-/* 相对首屏底边对齐；bottom 略抬高，首屏文字整体上移一点 */
+/* 相对首屏底边对齐；初始下移，只露出标题后两行 */
 .hero-text {
   position: absolute;
   left: clamp(1.25rem, 6vw, 5.5rem);
   right: clamp(1.5rem, 5vw, 3rem);
-  /* 下移首屏文案，默认首屏更接近仅露出标题后两行 */
-  bottom: clamp(-5.25rem, -2.6vw, -2.75rem);
+  /* 更大的底部间隙，文字距离视频底边明显留白 */
+  bottom: clamp(4rem, 8vw, 6rem);
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
@@ -389,6 +389,8 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  transform: scale(1);
+  transform-origin: 50% 50%;
 }
 
 .case-card__bg-img {
@@ -398,7 +400,6 @@ body {
   object-fit: cover;
   object-position: center;
   transform-origin: center center;
-  will-change: transform;
 }
 
 /* 无视差（减少动态）时仍保持与其它卡片一致的 1.25× 放大 */
