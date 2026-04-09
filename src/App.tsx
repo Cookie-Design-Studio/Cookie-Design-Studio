@@ -13,7 +13,6 @@ import {
 import { CaseCardBgParallax } from "./components/CaseCardBgParallax";
 import { HeroIntroType } from "./components/HeroIntroType";
 import { HeroSplitTitle } from "./components/HeroSplitTitle";
-import { Header } from "./components/Header";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import { gsap } from "./lib/gsapSetup";
 
@@ -203,7 +202,6 @@ export default function App() {
 
   return (
     <div id="top">
-      <Header />
       <main ref={mainRef} className="site-main">
         <CaseCardBgParallax rootRef={mainRef} />
         <section className="hero" aria-label="Introduction">
