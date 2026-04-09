@@ -1,0 +1,9 @@
+---
+description: 全站文字不使用 text-shadow；样式与内联样式均避免文字投影
+alwaysApply: true
+---
+
+# 文字投影
+
+- 不要在 CSS、Tailwind、内联样式中为文字添加 `text-shadow`。
+- 全局已在 `src/index.css` 用规则统一关闭；新增组件时请保持无文字投影，若需层次请用颜色对比或背景条，而非阴影。

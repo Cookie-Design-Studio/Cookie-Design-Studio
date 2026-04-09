@@ -1,0 +1,4 @@
+# Netlify：连接 Git 仓库后自动构建，或本地执行 netlify deploy --prod --dir=dist
+[build]
+  command = "npm run build"
+  publish = "dist"
