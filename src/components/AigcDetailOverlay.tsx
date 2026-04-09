@@ -1,4 +1,3 @@
-import { AigcProcessOverview } from "./AigcProcessOverview";
 import { AigcStepFullModels } from "./AigcStepFullModels";
 import { ProjectDetailOverlay } from "./ProjectDetailOverlay";
 
@@ -31,7 +30,6 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
         </>
       }
     >
-      <AigcProcessOverview />
       <AigcStepFullModels />
     </ProjectDetailOverlay>
   );
