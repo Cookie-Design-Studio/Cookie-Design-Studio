@@ -633,9 +633,13 @@ body {
 
 .case-contact-lanyard {
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: #0c0c0f;
-  padding: clamp(1rem, 2.5vw, 2rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 8vw, 5rem);
+  padding: clamp(1rem, 2.5vw, 2rem) clamp(1.25rem, 4vw, 3.5rem);
   box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
 }
 
 .lanyard-section {
@@ -645,11 +649,14 @@ body {
 .lanyard-wrapper {
   position: relative;
   width: min(100%, 1100px);
-  height: clamp(360px, 56vw, 620px);
+  min-height: calc(100vh - clamp(2rem, 5vw, 4rem));
+  min-height: calc(100dvh - clamp(2rem, 5vw, 4rem));
+  height: auto;
   margin: 0 auto;
   border-radius: 1.25rem;
   background: radial-gradient(circle at 50% 40%, #1a1a1f 0%, #0c0c0f 68%);
   overflow: hidden;
+  flex: 1 1 auto;
 }
 
 .lanyard-back-hint {
@@ -680,6 +687,11 @@ body {
   .case-contact-lanyard {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .lanyard-wrapper {
+    min-height: calc(100vh - 2rem);
+    min-height: calc(100dvh - 2rem);
   }
 }
 
