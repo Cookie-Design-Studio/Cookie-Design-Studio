@@ -634,6 +634,7 @@ body {
 .case-contact-lanyard {
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   min-height: 100dvh;
   background: #0c0c0f;
   padding: clamp(1rem, 2.5vw, 2rem) clamp(1.25rem, 4vw, 3.5rem);
@@ -648,8 +649,9 @@ body {
 
 .lanyard-wrapper {
   position: relative;
-  width: min(100%, 1100px);
+  width: 100%;
   min-height: calc(100vh - clamp(2rem, 5vw, 4rem));
+  min-height: calc(100svh - clamp(2rem, 5vw, 4rem));
   min-height: calc(100dvh - clamp(2rem, 5vw, 4rem));
   height: auto;
   margin: 0 auto;
@@ -691,7 +693,24 @@ body {
 
   .lanyard-wrapper {
     min-height: calc(100vh - 2rem);
+    min-height: calc(100svh - 2rem);
     min-height: calc(100dvh - 2rem);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .case-contact-lanyard {
+    min-height: -webkit-fill-available;
+  }
+
+  .lanyard-wrapper {
+    min-height: calc(-webkit-fill-available - clamp(2rem, 5vw, 4rem));
+  }
+
+  @media (max-width: 640px) {
+    .lanyard-wrapper {
+      min-height: calc(-webkit-fill-available - 2rem);
+    }
   }
 }
 

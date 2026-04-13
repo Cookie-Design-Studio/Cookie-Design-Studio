@@ -26,7 +26,7 @@ type LanyardProps = {
 
 export function Lanyard({
   active = true,
-  position = [0, 0, 14],
+  position = [0, 0, 11.5],
   gravity = [0, -30, 0],
   fov = 20,
   transparent = true,
