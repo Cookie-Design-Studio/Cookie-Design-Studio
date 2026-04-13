@@ -631,6 +631,58 @@ body {
   }
 }
 
+.case-contact-lanyard {
+  width: 100%;
+  background: #0c0c0f;
+  padding: clamp(1rem, 2.5vw, 2rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 8vw, 5rem);
+  box-sizing: border-box;
+}
+
+.lanyard-section {
+  width: 100%;
+}
+
+.lanyard-wrapper {
+  position: relative;
+  width: min(100%, 1100px);
+  height: clamp(360px, 56vw, 620px);
+  margin: 0 auto;
+  border-radius: 1.25rem;
+  background: radial-gradient(circle at 50% 40%, #1a1a1f 0%, #0c0c0f 68%);
+  overflow: hidden;
+}
+
+.lanyard-back-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  font-size: clamp(3.2rem, 9vw, 8rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.12);
+  line-height: 1;
+}
+
+.lanyard-wrapper canvas {
+  position: relative;
+  z-index: 2;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .case-contact-lanyard {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* 项目详情叠层：首屏标题视口居中 + 入场动画；宽度用 --project-detail-w 与首页对齐 */
 .project-detail {
   position: fixed;
@@ -1040,6 +1092,26 @@ body {
 
 .project-detail__headline-line2-accent {
   color: #ff8d28;
+}
+
+/* ========== SplitText Animation Styles ========== */
+.split-parent {
+  overflow: hidden;
+}
+
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 .project-detail__close {

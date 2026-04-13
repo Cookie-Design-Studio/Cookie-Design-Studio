@@ -32,11 +32,8 @@ function ProjectDetailLenisReset({ open }: { open: boolean }) {
   return null;
 }
 
-/** 标题：打开后自下而上入场；最终 y=0，与首屏 flex 水平垂直居中一致 */
-const HEADLINE_REVEAL_LIFT_PX = 56;
+/** 标题：简单保持原位，文字动画由内部分子化组件处理 */
 const HEADLINE_ENTRANCE_SEC = 0.85;
-/** 滚动开始就向上“跟走”的距离（越大越明显） */
-const HEADLINE_SCROLL_LIFT_PX = 180;
 
 function ProjectDetailStickyHero({
   coverSrc,
@@ -46,30 +43,26 @@ function ProjectDetailStickyHero({
   headline: ReactNode;
 }) {
   const headlineRef = useRef<HTMLDivElement>(null);
-  const lenis = useLenis();
 
   useLayoutEffect(() => {
     const h = headlineRef.current;
     if (!h) return;
 
-    const endY = 0;
-    const startY = HEADLINE_REVEAL_LIFT_PX;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const ctx = gsap.context(() => {
       if (reduceMotion) {
-        gsap.set(h, { opacity: 1, y: endY, pointerEvents: "auto" });
+        gsap.set(h, { opacity: 1, pointerEvents: "auto" });
         return;
       }
-      gsap.set(h, { pointerEvents: "none" });
+      gsap.set(h, { opacity: 1, pointerEvents: "none" });
 
-      // 打开时入场：自下而上淡入
+      // 整体容器淡入，文字动画由内部 SplitText 处理
       gsap.fromTo(
         h,
-        { opacity: 0, y: startY },
+        { opacity: 0 },
         {
           opacity: 1,
-          y: endY,
           duration: HEADLINE_ENTRANCE_SEC,
           ease: "power2.out",
           onComplete: () => {
@@ -83,62 +76,6 @@ function ProjectDetailStickyHero({
       ctx.revert();
     };
   }, [coverSrc]);
-
-  useEffect(() => {
-    const h = headlineRef.current;
-    if (!h) return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
-
-    const scroller = h.closest<HTMLElement>(".project-detail__scroll");
-    if (!scroller) return;
-
-    let raf = 0;
-    const maxLift = HEADLINE_SCROLL_LIFT_PX;
-
-    const update = () => {
-      const scrollTop = scroller.scrollTop;
-      const span = Math.max(1, window.innerHeight * 0.9);
-      const t = Math.min(1, Math.max(0, scrollTop / span));
-      gsap.set(h, { y: -maxLift * t });
-    };
-
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-
-    const onResize = () => {
-      onScroll();
-    };
-
-    update();
-    window.addEventListener("resize", onResize);
-
-    // 优先订阅 Lenis，避免与原生 scroll 双通道重复驱动
-    const l = lenis as unknown as {
-      on?: (e: string, cb: () => void) => void;
-      off?: (e: string, cb: () => void) => void;
-    };
-    const onLenisScroll = () => onScroll();
-    const hasLenisHook = Boolean(l?.on && l?.off);
-    if (hasLenisHook) {
-      l.on?.("scroll", onLenisScroll);
-    } else {
-      scroller.addEventListener("scroll", onScroll, { passive: true });
-    }
-
-    return () => {
-      if (hasLenisHook) {
-        l.off?.("scroll", onLenisScroll);
-      } else {
-        scroller.removeEventListener("scroll", onScroll);
-      }
-      window.removeEventListener("resize", onResize);
-      cancelAnimationFrame(raf);
-    };
-  }, [lenis]);
 
   return (
     <div className="project-detail__sticky-hero">

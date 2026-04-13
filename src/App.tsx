@@ -13,6 +13,7 @@ import {
 import { CaseCardBgParallax } from "./components/CaseCardBgParallax";
 import { HeroIntroType } from "./components/HeroIntroType";
 import { HeroSplitTitle } from "./components/HeroSplitTitle";
+import { Lanyard } from "./components/Lanyard";
 import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 import { gsap } from "./lib/gsapSetup";
 
@@ -390,6 +391,9 @@ export default function App() {
                 <span className="case-work-bar__arrow">{"\u2B07"}</span>
               </span>
             </header>
+            <div className="case-contact-lanyard">
+              <Lanyard cardModelSrc="/lanyard/card1.glb" />
+            </div>
           </div>
         </section>
       </main>

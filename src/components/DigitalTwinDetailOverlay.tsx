@@ -1,5 +1,6 @@
 import { ProjectDetailFilmstrip } from "./ProjectDetailFilmstrip";
 import { ProjectDetailOverlay } from "./ProjectDetailOverlay";
+import { SplitText } from "./SplitText";
 
 type DigitalTwinDetailOverlayProps = {
   open: boolean;
@@ -22,12 +23,29 @@ export function DigitalTwinDetailOverlay({
       ariaLabelledBy="dt-detail-headline"
       headline={
         <>
-          <h2 id="dt-detail-headline" className="project-detail__headline-line1">
-            Digital Twin
-          </h2>
-          <p className="project-detail__headline-line2">
-            Spatial Intelligence
-          </p>
+          <SplitText
+            id="dt-detail-headline"
+            text="Digital Twin"
+            tag="h2"
+            className="project-detail__headline-line1"
+            textAlign="left"
+            delay={40}
+            duration={1}
+            splitType="chars, words"
+            from={{ opacity: 0, y: 20 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+          <SplitText
+            text="Spatial Intelligence"
+            tag="p"
+            className="project-detail__headline-line2"
+            textAlign="left"
+            delay={35}
+            duration={1}
+            splitType="chars, words"
+            from={{ opacity: 0, y: 28 }}
+            to={{ opacity: 1, y: 0 }}
+          />
         </>
       }
     >
@@ -247,9 +265,18 @@ export function DigitalTwinDetailOverlay({
           />
         </div>
       </section>
+      <header
+        className="case-work-bar case-work-bar--feature"
+        aria-label="Factory Floor"
+      >
+        <h2 className="case-work-bar__title">Factory Floor</h2>
+        <span className="case-work-bar__arrow-wrap" aria-hidden="true">
+          <span className="case-work-bar__arrow">{"\u2B07"}</span>
+        </span>
+      </header>
       <section
         className="project-detail__digital-square-grid"
-        aria-label="Component cards extended"
+        aria-label="Factory Floor"
       >
         <div className="project-detail__digital-square-card project-detail__digital-square-card--wide">
           <img
@@ -295,6 +322,34 @@ export function DigitalTwinDetailOverlay({
             loading="lazy"
             decoding="async"
           />
+        </div>
+      </section>
+      <section
+        className="project-detail__digital-video-block"
+        aria-label="Factory Floor video"
+        style={{ background: "var(--surface-light)" }}
+      >
+        <div className="project-detail__video-stack">
+          <div className="project-detail__video-card-inner" style={{ background: "var(--surface-light)" }}>
+            <video
+              className="project-detail__video"
+              src="/digital/work-41.mp4"
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              disablePictureInPicture
+              controls={false}
+              controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
+              disableRemotePlayback
+              draggable={false}
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </section>
     </ProjectDetailOverlay>

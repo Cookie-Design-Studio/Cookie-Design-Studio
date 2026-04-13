@@ -15,6 +15,7 @@ import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
 
 type LanyardProps = {
+  active?: boolean;
   position?: [number, number, number];
   gravity?: [number, number, number];
   fov?: number;
@@ -24,6 +25,7 @@ type LanyardProps = {
 };
 
 export function Lanyard({
+  active = true,
   position = [0, 0, 14],
   gravity = [0, -30, 0],
   fov = 20,
@@ -44,10 +46,11 @@ export function Lanyard({
   return (
     <section className="lanyard-section" aria-label="Lanyard">
       <div className="lanyard-wrapper">
-        <div className="lanyard-hint" aria-hidden="true">
-          Drag It!
+        <div className="lanyard-back-hint" aria-hidden="true">
+          Drag It！
         </div>
         <Canvas
+          frameloop={active ? "always" : "demand"}
           camera={{ position, fov }}
           dpr={[1, isMobile ? 1.5 : 2]}
           gl={{ alpha: transparent }}
@@ -56,7 +59,7 @@ export function Lanyard({
           }
         >
           <ambientLight intensity={Math.PI} />
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics paused={!active} gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
             <Band
               isMobile={isMobile}
               cardModelSrc={cardModelSrc}
