@@ -323,14 +323,11 @@ export function DigitalTwinDetailOverlay({
             decoding="async"
           />
         </div>
-      </section>
-      <section
-        className="project-detail__digital-video-block"
-        aria-label="Factory Floor video"
-        style={{ background: "var(--surface-light)" }}
-      >
-        <div className="project-detail__video-stack">
-          <div className="project-detail__video-card-inner" style={{ background: "var(--surface-light)" }}>
+        <div className="project-detail__digital-square-card project-detail__digital-square-card--wide">
+          <div
+            className="project-detail__video-card-inner"
+            style={{ background: "var(--surface-light)" }}
+          >
             <video
               className="project-detail__video"
               src="/digital/work-41.mp4"
