@@ -14,6 +14,16 @@ export function DigitalTwinDetailOverlay({
   open,
   onClose,
 }: DigitalTwinDetailOverlayProps) {
+  const ensureInlineAutoplay = (video: HTMLVideoElement) => {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      void playPromise.catch(() => {});
+    }
+  };
+
   return (
     <ProjectDetailOverlay
       open={open}
@@ -79,6 +89,8 @@ export function DigitalTwinDetailOverlay({
               draggable={false}
               aria-hidden="true"
               tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
             >
               Your browser does not support the video tag.
             </video>
@@ -99,6 +111,8 @@ export function DigitalTwinDetailOverlay({
               draggable={false}
               aria-hidden="true"
               tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
             >
               Your browser does not support the video tag.
             </video>
@@ -119,6 +133,8 @@ export function DigitalTwinDetailOverlay({
               draggable={false}
               aria-hidden="true"
               tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
             >
               Your browser does not support the video tag.
             </video>
@@ -343,6 +359,75 @@ export function DigitalTwinDetailOverlay({
               draggable={false}
               aria-hidden="true"
               tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </section>
+      <header
+        className="case-work-bar case-work-bar--feature"
+        aria-label="Assembly Line"
+      >
+        <h2 className="case-work-bar__title">Assembly Line</h2>
+        <span className="case-work-bar__arrow-wrap" aria-hidden="true">
+          <span className="case-work-bar__arrow">{"\u2B07"}</span>
+        </span>
+      </header>
+      <section
+        className="project-detail__digital-video-block"
+        aria-label="Assembly Line videos"
+        style={{ background: "var(--surface-light)" }}
+      >
+        <div className="project-detail__video-stack">
+          <div
+            className="project-detail__video-card-inner"
+            style={{ background: "var(--surface-light)" }}
+          >
+            <video
+              className="project-detail__video"
+              src="/digital/work-39.mp4"
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              disablePictureInPicture
+              controls={false}
+              controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
+              disableRemotePlayback
+              draggable={false}
+              aria-hidden="true"
+              tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div
+            className="project-detail__video-card-inner"
+            style={{ background: "var(--surface-light)" }}
+          >
+            <video
+              className="project-detail__video"
+              src="/digital/work-40.mp4"
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              disablePictureInPicture
+              controls={false}
+              controlsList="nodownload noplaybackrate nofullscreen noremoteplayback"
+              disableRemotePlayback
+              draggable={false}
+              aria-hidden="true"
+              tabIndex={-1}
+              onCanPlay={(e) => ensureInlineAutoplay(e.currentTarget)}
+              onLoadedData={(e) => ensureInlineAutoplay(e.currentTarget)}
             >
               Your browser does not support the video tag.
             </video>
