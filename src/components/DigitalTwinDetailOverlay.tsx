@@ -56,6 +56,17 @@ export function DigitalTwinDetailOverlay({
             from={{ opacity: 0, y: 28 }}
             to={{ opacity: 1, y: 0 }}
           />
+          <SplitText
+            text="We deliver enterprise-grade digital twins that unify live operations into one command view, accelerating decisions, reducing downtime, and turning complex production data into measurable business outcomes."
+            tag="p"
+            className="project-detail__headline-copy"
+            textAlign="center"
+            delay={16}
+            duration={0.68}
+            splitType="chars, words"
+            from={{ opacity: 0, y: 24 }}
+            to={{ opacity: 1, y: 0 }}
+          />
         </>
       }
     >
@@ -241,7 +252,7 @@ export function DigitalTwinDetailOverlay({
         </div>
       </section>
       <header
-        className="case-work-bar case-work-bar--feature"
+        className="case-work-bar case-work-bar--dark case-work-bar--feature"
         aria-label="Feature Components"
       >
         <h2 className="case-work-bar__title">Feature Components</h2>
@@ -250,7 +261,7 @@ export function DigitalTwinDetailOverlay({
         </span>
       </header>
       <section
-        className="project-detail__digital-square-grid project-detail__digital-square-grid--feature"
+        className="project-detail__digital-square-grid project-detail__digital-square-grid--dark project-detail__digital-square-grid--feature"
         aria-label="Component cards feature strip"
       >
         <div className="project-detail__digital-square-card project-detail__digital-square-card--wide">
@@ -368,7 +379,7 @@ export function DigitalTwinDetailOverlay({
         </div>
       </section>
       <header
-        className="case-work-bar case-work-bar--feature"
+        className="case-work-bar case-work-bar--dark"
         aria-label="Assembly Line"
       >
         <h2 className="case-work-bar__title">Assembly Line</h2>
@@ -379,12 +390,12 @@ export function DigitalTwinDetailOverlay({
       <section
         className="project-detail__digital-video-block"
         aria-label="Assembly Line videos"
-        style={{ background: "var(--surface-light)" }}
+        style={{ background: "#0c0c0f" }}
       >
         <div className="project-detail__video-stack">
           <div
             className="project-detail__video-card-inner"
-            style={{ background: "var(--surface-light)" }}
+            style={{ background: "#0c0c0f" }}
           >
             <video
               className="project-detail__video"
@@ -409,7 +420,7 @@ export function DigitalTwinDetailOverlay({
           </div>
           <div
             className="project-detail__video-card-inner"
-            style={{ background: "var(--surface-light)" }}
+            style={{ background: "#0c0c0f" }}
           >
             <video
               className="project-detail__video"
