@@ -1316,6 +1316,36 @@ body {
   color: #ff8d28;
 }
 
+/* 移动端未做完整适配：先关闭交互动效，避免 hover/过渡带来的跳动 */
+@media (max-width: 860px), (hover: none) and (pointer: coarse) {
+  .aigc-process-overview__img,
+  .aigc-process-overview__index,
+  .aigc-process-overview__label,
+  .aigc-process-showcase__nav,
+  .aigc-fix-intro__detail-thumb {
+    transition: none;
+  }
+
+  .aigc-process-overview__card:hover .aigc-process-overview__img,
+  .aigc-process-overview__card:focus-visible .aigc-process-overview__img {
+    transform: none;
+  }
+
+  .aigc-process-overview__item:hover .aigc-process-overview__index,
+  .aigc-process-overview__item:focus-within .aigc-process-overview__index {
+    transform: scale(1);
+  }
+
+  .aigc-process-overview__item:hover .aigc-process-overview__label,
+  .aigc-process-overview__item:focus-within .aigc-process-overview__label {
+    color: rgba(245, 245, 247, 0.92);
+  }
+
+  .aigc-fix-intro__detail-thumb:hover {
+    border-color: rgba(146, 159, 175, 0.55);
+  }
+}
+
 .aigc-process-showcase {
   box-sizing: border-box;
   width: 100%;
