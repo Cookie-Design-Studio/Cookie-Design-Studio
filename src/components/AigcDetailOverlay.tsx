@@ -85,6 +85,20 @@ const HB_POSTER_STEPS = [
   },
 ] as const;
 
+const GN_LOOP_IMAGES = [
+  "/aigc/gn-1-1.png",
+  "/aigc/gn-1-2.png",
+  "/aigc/gn-2-1.png",
+  "/aigc/gn-2-2.png",
+] as const;
+
+const GN_LOOP_IMAGES_REVERSED = [
+  "/aigc/gn-3-1.png",
+  "/aigc/gn-3-2.png",
+  "/aigc/gn-4-1.png",
+  "/aigc/gn-4-2.png",
+] as const;
+
 export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
   const datasetImages = ["/aigc/data-001.png", "/aigc/data-7x.png", "/aigc/data-9x.png"] as const;
   const datasetTitles = ["ZEEKR 001 Dataset", "ZEEKR 7X Dataset", "ZEEKR 9X Dataset"] as const;
@@ -595,6 +609,50 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
         </div>
         <div id="aigc-showcase-4" className="aigc-process-showcase__item">
           <img className="aigc-process-showcase__img" src="/aigc/img-05.png" alt="" />
+          <div className="aigc-process-showcase__white-block" aria-hidden="true">
+            <div className="aigc-process-showcase__black-rounded">
+              <p className="aigc-process-showcase__black-line1">
+                Standardized Batch Processing Dataset
+              </p>
+              <p className="aigc-process-showcase__black-line2">Repair reference</p>
+              <div className="aigc-showcase-4__gn-grid">
+                <div className="aigc-showcase-4__gn-track">
+                  {[...GN_LOOP_IMAGES, ...GN_LOOP_IMAGES].map((src, idx) => (
+                    <div key={`${src}-${idx}`} className="aigc-showcase-4__gn-card">
+                      <img className="aigc-showcase-4__gn-img" src={src} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="aigc-showcase-4__gn-grid aigc-showcase-4__gn-grid--secondary">
+                <div className="aigc-showcase-4__gn-track aigc-showcase-4__gn-track--reverse">
+                  {[...GN_LOOP_IMAGES_REVERSED, ...GN_LOOP_IMAGES_REVERSED].map((src, idx) => (
+                    <div key={`${src}-${idx}`} className="aigc-showcase-4__gn-card">
+                      <img className="aigc-showcase-4__gn-img" src={src} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="aigc-showcase-4__gn-grid aigc-showcase-4__gn-grid--secondary">
+                <div className="aigc-showcase-4__gn-track">
+                  {[...GN_LOOP_IMAGES, ...GN_LOOP_IMAGES].map((src, idx) => (
+                    <div key={`copy-${src}-${idx}`} className="aigc-showcase-4__gn-card">
+                      <img className="aigc-showcase-4__gn-img" src={src} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="aigc-showcase-4__gn-grid aigc-showcase-4__gn-grid--secondary">
+                <div className="aigc-showcase-4__gn-track aigc-showcase-4__gn-track--reverse">
+                  {[...GN_LOOP_IMAGES_REVERSED, ...GN_LOOP_IMAGES_REVERSED].map((src, idx) => (
+                    <div key={`reverse-copy-${src}-${idx}`} className="aigc-showcase-4__gn-card">
+                      <img className="aigc-showcase-4__gn-img" src={src} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="aigc-process-showcase__copy aigc-process-showcase__copy--right">
             <p className="aigc-process-showcase__line1">04 Concept Design</p>
             <p className="aigc-process-showcase__line2">
@@ -611,6 +669,22 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
         </div>
         <div id="aigc-showcase-5" className="aigc-process-showcase__item">
           <img className="aigc-process-showcase__img" src="/aigc/img-06.png" alt="" />
+          <div
+            className="aigc-showcase-lj-follow"
+            aria-labelledby="aigc-showcase-lj-follow-title"
+          >
+            <div className="aigc-showcase-lj-follow__intro">
+              <h2 id="aigc-showcase-lj-follow-title" className="aigc-showcase-lj-follow__title">
+                AI Enables Designers To Also Generate Code
+              </h2>
+            </div>
+            <div className="aigc-showcase-lj-follow__stack" aria-hidden="true">
+              <img className="aigc-showcase-lj-follow__img" src="/aigc/lj-1.png" alt="" />
+              <img className="aigc-showcase-lj-follow__img" src="/aigc/lj-2.png" alt="" />
+              <img className="aigc-showcase-lj-follow__img" src="/aigc/lj-3.png" alt="" />
+              <img className="aigc-showcase-lj-follow__img" src="/aigc/lj-4.png" alt="" />
+            </div>
+          </div>
           <div className="aigc-process-showcase__copy aigc-process-showcase__copy--left">
             <p className="aigc-process-showcase__line1">05 Component Design</p>
             <p className="aigc-process-showcase__line2">

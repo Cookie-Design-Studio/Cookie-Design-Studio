@@ -1422,7 +1422,7 @@ body {
   color: rgba(245, 245, 247, 0.72);
   font-size: clamp(0.7rem, 0.58rem + 0.35vw, 0.82rem);
   font-weight: 300;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   line-height: 1.35;
 }
 
@@ -1497,6 +1497,45 @@ body {
   height: auto;
 }
 
+/* showcase-5：黑底反色容器，单行标题 + lj-1~4 纵向排布 */
+.aigc-showcase-lj-follow {
+  box-sizing: border-box;
+  width: calc(100% + 2 * var(--aigc-inline-pad));
+  max-width: none;
+  margin-left: calc(-1 * var(--aigc-inline-pad));
+  margin-right: calc(-1 * var(--aigc-inline-pad));
+  background: #0c0c0f;
+  padding: clamp(1.75rem, 4.2vw, 2.75rem)
+    calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
+}
+
+.aigc-showcase-lj-follow__intro {
+  margin-bottom: clamp(1.1rem, 2.6vw, 1.8rem);
+  text-align: center;
+}
+
+.aigc-showcase-lj-follow__title {
+  margin: 0;
+  color: rgba(245, 245, 247, 0.96);
+  font-size: var(--aigc-section-headline-size);
+  font-weight: 600;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.22;
+}
+
+.aigc-showcase-lj-follow__stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.7rem, 1.7vw, 1.1rem);
+}
+
+.aigc-showcase-lj-follow__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: clamp(0.55rem, 1.4vw, 0.9rem);
+}
+
 .aigc-process-showcase__white-block {
   /* 横向留白由 .aigc-process-showcase 承担，避免与父级双重叠加 */
   box-sizing: border-box;
@@ -1554,6 +1593,82 @@ body {
 
 .aigc-process-showcase__black-media--secondary {
   margin-top: clamp(1.2rem, 2.8vw, 2rem);
+}
+
+.aigc-showcase-4__gn-grid {
+  /* 可调参数：speed / logoHeight / gap */
+  --aigc-gn-gap: clamp(0.7rem, 1.5vw, 1.1rem);
+  --aigc-gn-logo-height: clamp(10rem, 18vw, 12.5rem);
+  --aigc-gn-loop-duration: 30s;
+  /* 一屏约显示 2.5 张：2 张完整 + 半张预览 */
+  --aigc-gn-card-width: clamp(16.5rem, 38vw, 23rem);
+  /* 单轮（4 张）的精确平移距离：4 个卡宽 + 4 个间隙 */
+  --aigc-gn-seq-shift: calc(4 * var(--aigc-gn-card-width) + 4 * var(--aigc-gn-gap));
+  margin-top: clamp(0.8rem, 2vw, 1.2rem);
+  overflow: hidden;
+}
+
+.aigc-showcase-4__gn-grid--secondary {
+  margin-top: clamp(0.7rem, 1.7vw, 1rem);
+}
+
+.aigc-showcase-4__gn-track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--aigc-gn-gap);
+  width: max-content;
+  animation: aigc-gn-marquee var(--aigc-gn-loop-duration) linear infinite;
+}
+
+.aigc-showcase-4__gn-track--reverse {
+  animation-name: aigc-gn-marquee-reverse;
+}
+
+.aigc-showcase-4__gn-grid:hover .aigc-showcase-4__gn-track,
+.aigc-showcase-4__gn-grid:focus-within .aigc-showcase-4__gn-track {
+  animation-play-state: paused;
+}
+
+.aigc-showcase-4__gn-card {
+  flex: 0 0 var(--aigc-gn-card-width);
+  border-radius: clamp(0.55rem, 1.4vw, 0.9rem);
+  overflow: hidden;
+  height: var(--aigc-gn-logo-height);
+  background: rgba(245, 245, 247, 0.04);
+}
+
+.aigc-showcase-4__gn-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+@keyframes aigc-gn-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--aigc-gn-seq-shift)));
+  }
+}
+
+@keyframes aigc-gn-marquee-reverse {
+  from {
+    transform: translateX(calc(-1 * var(--aigc-gn-seq-shift)));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aigc-showcase-4__gn-track {
+    animation: none;
+    transform: translateX(0);
+  }
 }
 
 .aigc-process-showcase__thumb-grid {
@@ -1719,7 +1834,7 @@ body {
   padding-bottom: clamp(1.45rem, 3vw, 2.2rem);
   padding-left: calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
   padding-right: calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
-  background: #f8f8f8;
+  background: #0c0c0f;
 }
 
 .aigc-detail-reasons__text {
@@ -1728,7 +1843,7 @@ body {
 
 .aigc-detail-reasons__line1 {
   margin: 0;
-  color: #0c0c0f;
+  color: rgba(245, 245, 247, 0.96);
   font-size: clamp(1.72rem, 1.28rem + 1.15vw, 2.62rem);
   font-weight: 600;
   letter-spacing: var(--site-letter-spacing);
@@ -1737,7 +1852,7 @@ body {
 
 .aigc-detail-reasons__line2 {
   margin: clamp(0.65rem, 1.6vw, 1rem) 0 0;
-  color: rgba(12, 12, 15, 0.85);
+  color: rgba(245, 245, 247, 0.72);
   font-size: clamp(1.06rem, 0.9rem + 0.46vw, 1.42rem);
   font-weight: 400;
   letter-spacing: var(--site-letter-spacing);
@@ -1749,7 +1864,7 @@ body {
   justify-self: end;
   border-radius: clamp(0.9rem, 2vw, 1.45rem);
   overflow: hidden;
-  background: #ffffff;
+  background: rgba(245, 245, 247, 0.08);
 }
 
 .aigc-detail-reasons__img {
