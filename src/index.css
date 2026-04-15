@@ -86,12 +86,13 @@ body {
   min-height: 100%;
   font-family: "Scto Grotesk A", sans-serif;
   letter-spacing: var(--site-letter-spacing);
-  background: #0c0c0f;
-  color: #f2f2f4;
+  background: #ffffff;
+  color: #0c0c0f;
 }
 
 #root {
   min-height: 100vh;
+  background: #ffffff;
 }
 
 .site-header {
@@ -756,6 +757,25 @@ body {
   min-height: 72dvh;
 }
 
+/* Digital Twin 详情：横向与 AIGC 数据集主图列对齐（外栏 + 内缩 = aigc-inline-pad + aigc-showcase-content-pad） */
+.project-detail--digital {
+  --digital-inline-pad: clamp(2.75rem, 8vw, 5.5rem);
+  --digital-content-pad: clamp(1rem, 3vw, 2rem);
+  --digital-total-inline-pad: calc(var(--digital-inline-pad) + var(--digital-content-pad));
+}
+
+.project-detail--digital .case-work-bar {
+  --case-work-bar-inline: var(--digital-total-inline-pad);
+}
+
+.project-detail--digital .project-detail__digital-video-block {
+  --digital-video-inline-gap: var(--digital-total-inline-pad);
+}
+
+.project-detail--digital .project-detail__digital-square-grid {
+  --digital-square-inline-gap: var(--digital-total-inline-pad);
+}
+
 /*
  * 首屏：改为常规流式区块（非 sticky），滚动时立即随页面上移。
  * 标题仍在块内 flex 居中；底图 cover 铺满。
@@ -1101,10 +1121,10 @@ body {
   will-change: transform, opacity;
 }
 
-/* 流体字号：较原尺寸约放大一档 */
+/* 流体字号：详情首行小标题（各项目详情共用） */
 .project-detail__headline-line1 {
   margin: 0;
-  font-size: clamp(2rem, 1rem + 2.1vw, 4.5rem);
+  font-size: clamp(1.65rem, 0.85rem + 1.65vw, 3.5rem);
   font-weight: 400;
   letter-spacing: var(--site-letter-spacing);
   color: rgba(245, 245, 247, 0.75);
@@ -1147,11 +1167,27 @@ body {
   text-wrap: pretty;
 }
 
+/* AIGC 详情首屏：收紧三行标题与介绍段之间的上下间距 */
+.project-detail--aigc .project-detail__headline-line2 {
+  margin-top: clamp(0.15rem, 0.45vw, 0.28rem);
+}
+
 .project-detail--aigc .project-detail__headline-copy {
+  margin-top: clamp(0.08rem, 0.32vw, 0.2rem);
   color: #ffffff;
 }
 
+/* AIGC：首屏以下统一横向内边距（首屏 sticky-hero 不变） */
+.project-detail--aigc {
+  --aigc-inline-pad: clamp(2.75rem, 8vw, 5.5rem);
+  /* 与 black-rounded 内边距一致：文案/缩略图/对比区与数据集主图 .black-img 左右对齐 */
+  --aigc-showcase-content-pad: clamp(1rem, 3vw, 2rem);
+  /* fix-intro 大标题 / showcase-3 海报区主标题 等同级标题统一字号（取最大档） */
+  --aigc-section-headline-size: clamp(2rem, 1.45rem + 1.35vw, 3.15rem);
+}
+
 .aigc-process-overview {
+  --aigc-overview-y-gap: clamp(2.2rem, 5.2vw, 3.8rem);
   box-sizing: border-box;
   width: 100%;
   min-height: 100vh;
@@ -1159,8 +1195,17 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(2.2rem, 5.2vw, 3.8rem) clamp(2.75rem, 8vw, 5.5rem);
+  align-items: stretch;
+  padding: clamp(1.25rem, 3vw, 2rem) var(--aigc-inline-pad);
   background: #0c0c0f;
+}
+
+.aigc-process-overview__stack {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .aigc-process-overview__title {
@@ -1182,7 +1227,9 @@ body {
 }
 
 .aigc-process-overview__grid {
-  margin-top: clamp(2rem, 4.5vw, 3.4rem);
+  box-sizing: border-box;
+  margin-top: var(--aigc-overview-y-gap);
+  padding-inline: var(--aigc-showcase-content-pad);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: clamp(0.55rem, 1.6vw, 1rem);
@@ -1220,7 +1267,15 @@ body {
   font-size: clamp(4.08rem, 3.48rem + 1.32vw, 5.04rem);
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.06em;
+  transform: scale(1);
+  transform-origin: top left;
+  transition: transform 0.36s ease;
+}
+
+.aigc-process-overview__item:hover .aigc-process-overview__index,
+.aigc-process-overview__item:focus-within .aigc-process-overview__index {
+  transform: scale(0.72);
 }
 
 .aigc-process-overview__img {
@@ -1262,8 +1317,10 @@ body {
 }
 
 .aigc-process-showcase {
+  box-sizing: border-box;
   width: 100%;
-  background: #0c0c0f;
+  padding-inline: var(--aigc-inline-pad);
+  background: #ffffff;
 }
 
 .aigc-process-showcase__item {
@@ -1280,12 +1337,141 @@ body {
   object-position: center;
 }
 
+/* 段首横幅：抵消 section 左右内边距，横向铺满项目详情可视宽度（与视口一致） */
+.aigc-process-showcase__item > .aigc-process-showcase__img {
+  width: calc(100% + 2 * var(--aigc-inline-pad));
+  max-width: none;
+  margin-left: calc(-1 * var(--aigc-inline-pad));
+  margin-right: calc(-1 * var(--aigc-inline-pad));
+}
+
+/* showcase-3：横幅下全宽黑底，四枚圆角卡片内图片完整显示；左右与 showcase-1 black-rounded 内主图对齐（inline + content-pad） */
+.aigc-showcase-hb {
+  box-sizing: border-box;
+  width: calc(100% + 2 * var(--aigc-inline-pad));
+  max-width: none;
+  margin-left: calc(-1 * var(--aigc-inline-pad));
+  margin-right: calc(-1 * var(--aigc-inline-pad));
+  background: #0c0c0f;
+  padding: clamp(2rem, 5vw, 3.5rem)
+    calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
+}
+
+.aigc-showcase-hb__title {
+  margin: 0 0 clamp(1.25rem, 3vw, 2rem);
+  text-align: center;
+  color: rgba(245, 245, 247, 0.94);
+  font-size: var(--aigc-section-headline-size);
+  font-weight: 600;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.3;
+}
+
+.aigc-showcase-hb__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.65rem, 2vw, 1.15rem);
+  width: 100%;
+  align-items: start;
+}
+
+.aigc-showcase-hb__col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.aigc-showcase-hb__copy {
+  margin-top: clamp(0.65rem, 1.6vw, 1rem);
+  text-align: left;
+}
+
+.aigc-showcase-hb__step {
+  margin: 0;
+  color: rgba(245, 245, 247, 0.72);
+  font-size: clamp(0.7rem, 0.58rem + 0.35vw, 0.82rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+}
+
+.aigc-showcase-hb__desc {
+  margin: clamp(0.3rem, 0.75vw, 0.45rem) 0 0;
+  color: rgba(245, 245, 247, 0.96);
+  font-size: clamp(0.84rem, 0.74rem + 0.28vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.38;
+}
+
+.aigc-showcase-hb__card {
+  box-sizing: border-box;
+  border-radius: clamp(0.55rem, 1.4vw, 0.9rem);
+  overflow: hidden;
+  display: block;
+  padding: 0;
+  min-height: 0;
+}
+
+.aigc-showcase-hb__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* showcase-3：海报步骤黑底区下方浅色块 + 圆角图（hb-5） */
+.aigc-showcase-hb-follow {
+  box-sizing: border-box;
+  width: calc(100% + 2 * var(--aigc-inline-pad));
+  max-width: none;
+  margin-left: calc(-1 * var(--aigc-inline-pad));
+  margin-right: calc(-1 * var(--aigc-inline-pad));
+  background: #ffffff;
+  padding: clamp(1.75rem, 4.2vw, 2.75rem)
+    calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
+}
+
+.aigc-showcase-hb-follow__intro {
+  margin-bottom: clamp(1.5rem, 3.4vw, 2.5rem);
+  text-align: center;
+}
+
+.aigc-showcase-hb-follow__title {
+  margin: 0;
+  color: #0c0c0f;
+  font-size: var(--aigc-section-headline-size);
+  font-weight: 600;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.22;
+}
+
+.aigc-showcase-hb-follow__sub {
+  margin: clamp(0.45rem, 1.1vw, 0.75rem) 0 0;
+  color: #929faf;
+  font-size: clamp(1.15rem, 1rem + 0.45vw, 1.52rem);
+  font-weight: 400;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.42;
+}
+
+.aigc-showcase-hb-follow__inner {
+  box-sizing: border-box;
+  border-radius: clamp(0.55rem, 1.4vw, 0.95rem);
+  overflow: hidden;
+}
+
+.aigc-showcase-hb-follow__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .aigc-process-showcase__white-block {
-  --aigc-showcase-inline-pad: clamp(2.75rem, 8vw, 5.5rem);
+  /* 横向留白由 .aigc-process-showcase 承担，避免与父级双重叠加 */
   box-sizing: border-box;
   width: 100%;
-  padding: clamp(2.1rem, 4.8vw, 3.2rem) var(--aigc-showcase-inline-pad)
-    clamp(2.6rem, 5.8vw, 3.8rem);
+  padding: clamp(2.1rem, 4.8vw, 3.2rem) 0 clamp(2.6rem, 5.8vw, 3.8rem);
   background: #ffffff;
 }
 
@@ -1295,7 +1481,7 @@ body {
   border-radius: clamp(1rem, 2.2vw, 1.75rem);
   background: #0c0c0f;
   box-sizing: border-box;
-  padding: clamp(1.75rem, 3.8vw, 2.6rem) clamp(1rem, 3vw, 2rem)
+  padding: clamp(1.75rem, 3.8vw, 2.6rem) var(--aigc-showcase-content-pad)
     clamp(2.4rem, 5vw, 3.4rem);
 }
 
@@ -1320,17 +1506,18 @@ body {
 .aigc-process-showcase__black-img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   margin-top: 0;
   border-radius: 0;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
 .aigc-process-showcase__black-media {
   position: relative;
   margin-top: clamp(0.8rem, 2vw, 1.2rem);
-  height: clamp(28rem, 58vw, 51rem);
+  height: auto;
+  min-height: 0;
   border-radius: clamp(0.55rem, 1.4vw, 0.9rem);
   overflow: hidden;
 }
@@ -1340,7 +1527,9 @@ body {
 }
 
 .aigc-process-showcase__thumb-grid {
+  box-sizing: border-box;
   margin-top: clamp(1.2rem, 2.8vw, 2rem);
+  padding-inline: var(--aigc-showcase-content-pad);
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(0.5rem, 1.2vw, 0.9rem);
@@ -1419,9 +1608,12 @@ body {
 }
 
 .aigc-process-showcase__compare {
+  box-sizing: border-box;
   position: relative;
   margin-top: clamp(1.35rem, 3.2vw, 2.2rem);
-  width: 100%;
+  margin-inline: var(--aigc-showcase-content-pad);
+  width: calc(100% - 2 * var(--aigc-showcase-content-pad));
+  max-width: 100%;
   border-radius: clamp(0.75rem, 1.8vw, 1.2rem);
   overflow: hidden;
   background: #0c0c0f;
@@ -1477,18 +1669,26 @@ body {
 .aigc-detail-reasons {
   box-sizing: border-box;
   width: 100%;
-  padding: clamp(2.1rem, 4.8vw, 3.2rem) 0;
+  padding-top: clamp(2.1rem, 4.8vw, 3.2rem);
+  padding-bottom: clamp(1rem, 2.2vw, 1.6rem);
   background: #ffffff;
 }
 
 .aigc-detail-reasons__inner {
   box-sizing: border-box;
-  width: 100%;
+  /* 灰色底拉满浏览器/叠层宽度：抵消上层 showcase 的左右内边距 */
+  width: calc(100% + 2 * var(--aigc-inline-pad));
+  max-width: none;
+  margin-left: calc(-1 * var(--aigc-inline-pad));
+  margin-right: calc(-1 * var(--aigc-inline-pad));
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
   align-items: stretch;
   gap: clamp(1rem, 2.8vw, 2rem);
-  padding: clamp(2.1rem, 4.8vw, 3.2rem) clamp(2.75rem, 8vw, 5.5rem);
+  padding-top: clamp(2.1rem, 4.8vw, 3.2rem);
+  padding-bottom: clamp(1.45rem, 3vw, 2.2rem);
+  padding-left: calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
+  padding-right: calc(var(--aigc-inline-pad) + var(--aigc-showcase-content-pad));
   background: #f8f8f8;
 }
 
@@ -1540,14 +1740,87 @@ body {
   box-sizing: border-box;
   width: 100%;
   background: #f8f8f8;
-  padding: clamp(2rem, 4.8vw, 3.2rem) clamp(2.75rem, 8vw, 5.5rem);
+  padding: clamp(1.45rem, 3.8vw, 2.5rem) var(--aigc-showcase-content-pad)
+    clamp(2rem, 4.8vw, 3.2rem);
+  border-radius: clamp(1rem, 2.2vw, 1.75rem);
+  overflow: hidden;
+}
+
+/* 与上下 showcase 段落拉开距离（白底间隙） */
+.aigc-process-showcase > .aigc-detail-reasons + .aigc-fix-intro {
+  margin-top: clamp(0.85rem, 2vw, 1.6rem);
+}
+
+.aigc-process-showcase > .aigc-fix-intro + .aigc-process-showcase__item {
+  margin-top: clamp(2rem, 5vw, 3.75rem);
+}
+
+.aigc-fix-intro > .aigc-process-showcase__black-rounded {
+  margin-top: clamp(1rem, 2.2vw, 1.5rem);
+}
+
+.aigc-fix-intro > .aigc-fix-intro__single + .aigc-process-showcase__black-rounded {
+  margin-top: clamp(1.35rem, 3vw, 2rem);
+}
+
+/* 主图区高度按 detail-3（908×505）比例锁定，其余 detail 图 cover 裁切 */
+.aigc-fix-intro__detail-media.aigc-process-showcase__black-media {
+  margin-top: 0;
+  width: 100%;
+  aspect-ratio: 908 / 505;
+  position: relative;
+}
+
+.aigc-fix-intro__detail-media .aigc-process-showcase__black-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+.aigc-fix-intro__detail-thumbs {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: clamp(0.35rem, 1vw, 0.6rem);
+  margin-top: clamp(0.85rem, 2vw, 1.25rem);
+}
+
+.aigc-fix-intro__detail-thumb {
+  display: block;
+  padding: 0;
+  border: 2px solid rgba(146, 159, 175, 0.55);
+  border-radius: clamp(0.35rem, 0.9vw, 0.55rem);
+  background: transparent;
+  cursor: default;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease;
+}
+
+.aigc-fix-intro__detail-thumb:hover {
+  border-color: #ff8d28;
+}
+
+.aigc-fix-intro__detail-thumb--current {
+  border-color: #ff8d28;
+}
+
+.aigc-fix-intro__detail-thumb-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
 }
 
 .aigc-fix-intro__line1 {
   margin: 0;
   text-align: center;
   color: #0c0c0f;
-  font-size: clamp(1.86rem, 1.42rem + 1.18vw, 2.78rem);
+  font-size: var(--aigc-section-headline-size);
   font-weight: 600;
   letter-spacing: var(--site-letter-spacing);
   line-height: 1.28;
@@ -1599,7 +1872,6 @@ body {
   width: clamp(2.5rem, 4.2vw, 3.4rem);
   height: clamp(2.5rem, 4.2vw, 3.4rem);
   padding: 0;
-  padding-bottom: clamp(0.08rem, 0.2vw, 0.14rem);
   border: 1px solid rgba(245, 245, 247, 0.35);
   border-radius: 999px;
   background: rgba(12, 12, 15, 0.62);
@@ -1612,6 +1884,11 @@ body {
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
+}
+
+.aigc-process-showcase__nav-icon {
+  display: block;
+  flex-shrink: 0;
 }
 
 .aigc-process-showcase__nav:hover {
@@ -1630,9 +1907,9 @@ body {
 .aigc-process-showcase__copy {
   position: absolute;
   top: clamp(2rem, 4.6vw, 3.6rem);
-  left: var(--aigc-showcase-inline-pad, clamp(2.75rem, 8vw, 5.5rem));
+  left: var(--aigc-showcase-content-pad);
   z-index: 2;
-  max-width: min(54ch, 86%);
+  max-width: min(54ch, calc(100% - 2 * var(--aigc-showcase-content-pad)));
 }
 
 .aigc-process-showcase__line1,
@@ -1666,14 +1943,14 @@ body {
 }
 
 .aigc-process-showcase__copy--left {
-  left: var(--aigc-showcase-inline-pad, clamp(2.75rem, 8vw, 5.5rem));
+  left: var(--aigc-showcase-content-pad);
   right: auto;
   text-align: left;
 }
 
 .aigc-process-showcase__copy--right {
   left: auto;
-  right: var(--aigc-showcase-inline-pad, clamp(2.75rem, 8vw, 5.5rem));
+  right: var(--aigc-showcase-content-pad);
   text-align: right;
 }
 
@@ -1684,11 +1961,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .aigc-process-overview {
-    padding-left: clamp(1.5rem, 6vw, 2rem);
-    padding-right: clamp(1.5rem, 6vw, 2rem);
-  }
-
   .aigc-process-overview__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

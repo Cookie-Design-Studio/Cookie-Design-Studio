@@ -10,12 +10,88 @@ type AigcDetailOverlayProps = {
 /** 首屏 sticky 底图：`public/aigc/aigc-1.png` */
 const COVER_SRC = "/aigc/aigc-1.png";
 
+const DETAIL_IMAGES = [
+  "/aigc/detail-1.png",
+  "/aigc/detail-2.png",
+  "/aigc/detail-3.png",
+  "/aigc/detail-4.png",
+  "/aigc/detail-5.png",
+  "/aigc/detail-6.png",
+  "/aigc/detail-7.png",
+] as const;
+
+function ShowcaseNavChevronLeft() {
+  return (
+    <svg
+      className="aigc-process-showcase__nav-icon"
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      aria-hidden="true"
+    >
+      <path
+        d="M15 7L9 12l6 5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ShowcaseNavChevronRight() {
+  return (
+    <svg
+      className="aigc-process-showcase__nav-icon"
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      aria-hidden="true"
+    >
+      <path
+        d="M9 7l6 5-6 5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+const HB_POSTER_STEPS = [
+  {
+    src: "/aigc/hb-1.png",
+    stepLabel: "STEP 01",
+    description: "Choose the right text–to–image",
+  },
+  {
+    src: "/aigc/hb-2.png",
+    stepLabel: "STEP 02",
+    description: "Choose the right background",
+  },
+  {
+    src: "/aigc/hb-3.png",
+    stepLabel: "STEP 03",
+    description: "Expand image background",
+  },
+  {
+    src: "/aigc/hb-4.png",
+    stepLabel: "STEP 04",
+    description: "Add appropriate text to the poster",
+  },
+] as const;
+
 export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
   const datasetImages = ["/aigc/data-001.png", "/aigc/data-7x.png", "/aigc/data-9x.png"] as const;
   const datasetTitles = ["ZEEKR 001 Dataset", "ZEEKR 7X Dataset", "ZEEKR 9X Dataset"] as const;
   const aitookitImages = ["/aigc/aitookit-1.png", "/aigc/aitookit-2.png"] as const;
   const [datasetImageIndex, setDatasetImageIndex] = useState(0);
   const [aitookitImageIndex, setAitookitImageIndex] = useState(0);
+  const [detailImageIndex, setDetailImageIndex] = useState(0);
   const maskComparePairs = [
     { base: "/aigc/mask-2-01.png", top: "/aigc/mask-2-02.png" },
     { base: "/aigc/mask-1-01.png", top: "/aigc/mask-1-02.png" },
@@ -124,11 +200,12 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
       }
     >
       <section className="aigc-process-overview" aria-label="Overview of the AIGC Project Process">
-        <h3 className="aigc-process-overview__title">
-          <span>Overview of the</span>
-          <span>AIGC Project Process</span>
-        </h3>
-        <div className="aigc-process-overview__grid">
+        <div className="aigc-process-overview__stack">
+          <h3 className="aigc-process-overview__title">
+            <span>Overview of the</span>
+            <span>AIGC Project Process</span>
+          </h3>
+          <div className="aigc-process-overview__grid">
           <div className="aigc-process-overview__item">
             <button
               type="button"
@@ -189,6 +266,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
             </button>
             <p className="aigc-process-overview__label">Component Design</p>
           </div>
+          </div>
         </div>
       </section>
       <section className="aigc-process-showcase" aria-label="AIGC process showcase images">
@@ -209,7 +287,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                   onClick={showPrevDatasetImage}
                   aria-label="Previous dataset image"
                 >
-                  ‹
+                  <ShowcaseNavChevronLeft />
                 </button>
                 <img
                   className="aigc-process-showcase__black-img"
@@ -222,7 +300,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                   onClick={showNextDatasetImage}
                   aria-label="Next dataset image"
                 >
-                  ›
+                  <ShowcaseNavChevronRight />
                 </button>
               </div>
               <div className="aigc-process-showcase__black-media aigc-process-showcase__black-media--secondary">
@@ -232,7 +310,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                   onClick={showPrevAitookitImage}
                   aria-label="Previous AIToolkit image"
                 >
-                  ‹
+                  <ShowcaseNavChevronLeft />
                 </button>
                 <img
                   className="aigc-process-showcase__black-img"
@@ -245,7 +323,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                   onClick={showNextAitookitImage}
                   aria-label="Next AIToolkit image"
                 >
-                  ›
+                  <ShowcaseNavChevronRight />
                 </button>
               </div>
             </div>
@@ -320,7 +398,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                 onClick={showPrevMaskPair}
                 aria-label="Previous compare image set"
               >
-                ‹
+                <ShowcaseNavChevronLeft />
               </button>
               <div
                 className="aigc-process-showcase__compare-overlay"
@@ -338,7 +416,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                 onClick={showNextMaskPair}
                 aria-label="Next compare image set"
               >
-                ›
+                <ShowcaseNavChevronRight />
               </button>
               <div
                 className="aigc-process-showcase__compare-divider"
@@ -410,9 +488,97 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           <div className="aigc-fix-intro__single" aria-hidden="true">
             <img className="aigc-fix-intro__img" src="/aigc/fix-4.png" alt="" />
           </div>
+          <div className="aigc-process-showcase__black-rounded">
+            <p className="aigc-process-showcase__black-line1">
+              Standardized Batch Processing Dataset
+            </p>
+            <p className="aigc-process-showcase__black-line2">Repair reference</p>
+            <div className="aigc-process-showcase__black-media">
+              <img
+                className="aigc-process-showcase__black-img"
+                src="/aigc/fix-5.png"
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="aigc-process-showcase__black-rounded">
+            <div className="aigc-process-showcase__black-media aigc-fix-intro__detail-media">
+              <img
+                className="aigc-process-showcase__black-img"
+                src={DETAIL_IMAGES[detailImageIndex]}
+                alt=""
+              />
+            </div>
+            <div
+              className="aigc-fix-intro__detail-thumbs"
+              role="tablist"
+              aria-label="Select detail image"
+            >
+              {DETAIL_IMAGES.map((src, i) => (
+                <button
+                  key={src}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === detailImageIndex}
+                  aria-label={`Detail ${i + 1}`}
+                  className={
+                    i === detailImageIndex
+                      ? "aigc-fix-intro__detail-thumb aigc-fix-intro__detail-thumb--current"
+                      : "aigc-fix-intro__detail-thumb"
+                  }
+                  onMouseEnter={() => setDetailImageIndex(i)}
+                  onFocus={() => setDetailImageIndex(i)}
+                  onClick={() => setDetailImageIndex(i)}
+                >
+                  <img className="aigc-fix-intro__detail-thumb-img" src={src} alt="" />
+                </button>
+              ))}
+            </div>
+          </div>
         </section>
         <div id="aigc-showcase-3" className="aigc-process-showcase__item">
           <img className="aigc-process-showcase__img" src="/aigc/img-04.png" alt="" />
+          <div
+            className="aigc-showcase-hb"
+            aria-labelledby="aigc-showcase-hb-title"
+          >
+            <p id="aigc-showcase-hb-title" className="aigc-showcase-hb__title">
+              How To Create A Car Poster
+            </p>
+            <div className="aigc-showcase-hb__grid">
+              {HB_POSTER_STEPS.map((item) => (
+                <div key={item.src} className="aigc-showcase-hb__col">
+                  <div className="aigc-showcase-hb__card">
+                    <img className="aigc-showcase-hb__img" src={item.src} alt="" />
+                  </div>
+                  <div className="aigc-showcase-hb__copy">
+                    <p className="aigc-showcase-hb__step">{item.stepLabel}</p>
+                    <p className="aigc-showcase-hb__desc">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div
+            className="aigc-showcase-hb-follow"
+            aria-labelledby="aigc-showcase-hb-follow-title"
+          >
+            <div className="aigc-showcase-hb-follow__intro">
+              <h2 id="aigc-showcase-hb-follow-title" className="aigc-showcase-hb-follow__title">
+                AI Enables Designers To Also Generate Code
+              </h2>
+              <p className="aigc-showcase-hb-follow__sub">
+                A simple poster editor can be used to create posters at any time
+              </p>
+            </div>
+            <div className="aigc-showcase-hb-follow__inner">
+              <img
+                className="aigc-showcase-hb-follow__img"
+                src="/aigc/hb-5.png"
+                alt=""
+              />
+            </div>
+          </div>
           <div className="aigc-process-showcase__copy aigc-process-showcase__copy--left">
             <p className="aigc-process-showcase__line1">03 Poster Design</p>
             <p className="aigc-process-showcase__line2">
