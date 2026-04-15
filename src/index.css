@@ -86,13 +86,13 @@ body {
   min-height: 100%;
   font-family: "Scto Grotesk A", sans-serif;
   letter-spacing: var(--site-letter-spacing);
-  background: #ffffff;
+  background: #0c0c0f;
   color: #0c0c0f;
 }
 
 #root {
   min-height: 100vh;
-  background: #ffffff;
+  background: #0c0c0f;
 }
 
 .site-header {

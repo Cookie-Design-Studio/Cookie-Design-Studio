@@ -224,8 +224,8 @@ export default function App() {
                 }}
               >
                 <source
-                  src={`/videos/showreel.webm?v=${HOME_VIDEO_REV}`}
-                  type="video/webm"
+                  src={`/videos/showreel.mp4?v=${HOME_VIDEO_REV}`}
+                  type="video/mp4"
                 />
               </video>
             </div>
