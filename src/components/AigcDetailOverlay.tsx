@@ -288,12 +288,14 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           <img className="aigc-process-showcase__img" src="/aigc/img-02.png" alt="" />
           <div className="aigc-process-showcase__white-block" aria-hidden="true">
             <div className="aigc-process-showcase__black-rounded">
-              <p className="aigc-process-showcase__black-line1">
-                Standardized Batch Processing Dataset
-              </p>
-              <p className="aigc-process-showcase__black-line2">
-                {datasetTitles[datasetImageIndex]}
-              </p>
+              <div className="aigc-process-showcase__black-heading">
+                <p className="aigc-process-showcase__black-line1">
+                  Standardized Batch Processing Dataset
+                </p>
+                <p className="aigc-process-showcase__black-line2">
+                  {datasetTitles[datasetImageIndex]}
+                </p>
+              </div>
               <div className="aigc-process-showcase__black-media">
                 <button
                   type="button"
@@ -486,16 +488,21 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           </div>
         </section>
         <section className="aigc-fix-intro" aria-label="How to address detail issues">
-          <p className="aigc-fix-intro__line1">How To Address Such Issues?</p>
-          <p className="aigc-fix-intro__line2">Detailed Repairs for Each Vehicle Model</p>
+          <div className="aigc-fix-intro__heading">
+            <p className="aigc-fix-intro__line1">How To Address Such Issues?</p>
+            <p className="aigc-fix-intro__line2">Detailed Repairs for Each Vehicle Model</p>
+          </div>
           <div className="aigc-fix-intro__grid" aria-hidden="true">
             <div className="aigc-fix-intro__card">
+              <p className="aigc-fix-intro__tag">Prospect Fix</p>
               <img className="aigc-fix-intro__img" src="/aigc/fix-1.png" alt="" />
             </div>
             <div className="aigc-fix-intro__card">
+              <p className="aigc-fix-intro__tag">Detail Fix</p>
               <img className="aigc-fix-intro__img" src="/aigc/fix-2.png" alt="" />
             </div>
             <div className="aigc-fix-intro__card">
+              <p className="aigc-fix-intro__tag">Background Fix</p>
               <img className="aigc-fix-intro__img" src="/aigc/fix-3.png" alt="" />
             </div>
           </div>
@@ -503,10 +510,12 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
             <img className="aigc-fix-intro__img" src="/aigc/fix-4.png" alt="" />
           </div>
           <div className="aigc-process-showcase__black-rounded">
-            <p className="aigc-process-showcase__black-line1">
-              Standardized Batch Processing Dataset
-            </p>
-            <p className="aigc-process-showcase__black-line2">Repair reference</p>
+            <div className="aigc-process-showcase__black-heading">
+              <p className="aigc-process-showcase__black-line1">
+                Standardized Batch Processing Dataset
+              </p>
+              <p className="aigc-process-showcase__black-line2">Repair reference</p>
+            </div>
             <div className="aigc-process-showcase__black-media">
               <img
                 className="aigc-process-showcase__black-img"
@@ -611,10 +620,12 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           <img className="aigc-process-showcase__img" src="/aigc/img-05.png" alt="" />
           <div className="aigc-process-showcase__white-block" aria-hidden="true">
             <div className="aigc-process-showcase__black-rounded">
-              <p className="aigc-process-showcase__black-line1">
-                Standardized Batch Processing Dataset
-              </p>
-              <p className="aigc-process-showcase__black-line2">Repair reference</p>
+              <div className="aigc-process-showcase__black-heading">
+                <p className="aigc-process-showcase__black-line1">
+                  Standardized Batch Processing Dataset
+                </p>
+                <p className="aigc-process-showcase__black-line2">Repair reference</p>
+              </div>
               <div className="aigc-showcase-4__gn-grid">
                 <div className="aigc-showcase-4__gn-track">
                   {[...GN_LOOP_IMAGES, ...GN_LOOP_IMAGES].map((src, idx) => (
