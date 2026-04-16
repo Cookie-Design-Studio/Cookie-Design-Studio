@@ -44,6 +44,12 @@ const DigitalTwinDetailOverlay = lazy(() =>
   })),
 );
 
+const WeiruiDetailOverlay = lazy(() =>
+  import("./components/WeiruiDetailOverlay").then((m) => ({
+    default: m.WeiruiDetailOverlay,
+  })),
+);
+
 const CaseSkillsMarqueeLine = memo(function CaseSkillsMarqueeLine({
   text,
   baseSpeedPx,
@@ -149,19 +155,28 @@ export default function App() {
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [aigcDetailOpen, setAigcDetailOpen] = useState(false);
   const [digitalTwinDetailOpen, setDigitalTwinDetailOpen] = useState(false);
+  const [weiruiDetailOpen, setWeiruiDetailOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const closeAigcDetail = useCallback(() => setAigcDetailOpen(false), []);
   const closeDigitalTwinDetail = useCallback(
     () => setDigitalTwinDetailOpen(false),
     [],
   );
+  const closeWeiruiDetail = useCallback(() => setWeiruiDetailOpen(false), []);
   const openDigitalTwinDetail = useCallback(() => {
     setAigcDetailOpen(false);
+    setWeiruiDetailOpen(false);
     setDigitalTwinDetailOpen(true);
   }, []);
   const openAigcDetail = useCallback(() => {
     setDigitalTwinDetailOpen(false);
+    setWeiruiDetailOpen(false);
     setAigcDetailOpen(true);
+  }, []);
+  const openWeiruiDetail = useCallback(() => {
+    setDigitalTwinDetailOpen(false);
+    setAigcDetailOpen(false);
+    setWeiruiDetailOpen(true);
   }, []);
   useHeroShowreelLoop(heroVideoRef);
 
@@ -354,6 +369,7 @@ export default function App() {
                   href="#project-3"
                   onClick={(e) => {
                     e.preventDefault();
+                    openWeiruiDetail();
                   }}
                 >
                   <span className="case-card__cta-label">View project</span>
@@ -406,6 +422,9 @@ export default function App() {
         ) : null}
         {aigcDetailOpen ? (
           <AigcDetailOverlay open={aigcDetailOpen} onClose={closeAigcDetail} />
+        ) : null}
+        {weiruiDetailOpen ? (
+          <WeiruiDetailOverlay open={weiruiDetailOpen} onClose={closeWeiruiDetail} />
         ) : null}
       </Suspense>
     </div>

@@ -84,6 +84,9 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: "Scto Grotesk A", sans-serif;
   letter-spacing: var(--site-letter-spacing);
   background: #0c0c0f;
@@ -92,7 +95,16 @@ body {
 
 #root {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #0c0c0f;
+}
+
+#top {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .site-header {
@@ -759,13 +771,16 @@ body {
 
 /* Digital Twin 详情：横向与 AIGC 数据集主图列对齐（外栏 + 内缩 = aigc-inline-pad + aigc-showcase-content-pad） */
 .project-detail--digital {
-  --digital-inline-pad: clamp(2.75rem, 8vw, 5.5rem);
+  --digital-inline-pad: 15vw;
   --digital-content-pad: clamp(1rem, 3vw, 2rem);
+  --digital-section-bottom-gap: clamp(0.75rem, 2vw, 1.5rem);
   --digital-total-inline-pad: calc(var(--digital-inline-pad) + var(--digital-content-pad));
 }
 
 .project-detail--digital .case-work-bar {
   --case-work-bar-inline: var(--digital-total-inline-pad);
+  /* 详情页标题条在窄屏下单独降一档，避免英文标题换行 */
+  --case-work-bar-title-size: clamp(2.1rem, 0.95rem + 6.4vw, 4.5rem);
 }
 
 .project-detail--digital .project-detail__digital-video-block {
@@ -774,6 +789,10 @@ body {
 
 .project-detail--digital .project-detail__digital-square-grid {
   --digital-square-inline-gap: var(--digital-total-inline-pad);
+}
+
+.project-detail--digital .case-work-bar__title {
+  white-space: nowrap;
 }
 
 /*
@@ -887,7 +906,8 @@ body {
 
 /* Digital 详情新增独立视频块（在 DOM 中与 filmstrip 分离） */
 .project-detail__digital-video-block {
-  --digital-video-top-gap: clamp(1rem, 3vw, 2rem);
+  --digital-video-top-gap: 0;
+  --digital-video-bottom-gap: var(--digital-section-bottom-gap, clamp(0.75rem, 2vw, 1.5rem));
   --digital-video-inline-gap: clamp(2.75rem, 8vw, 5.5rem);
   position: relative;
   z-index: 2;
@@ -895,21 +915,29 @@ body {
   width: 100%;
   margin-top: -1px;
   padding: var(--digital-video-top-gap) var(--digital-video-inline-gap)
-    var(--digital-video-top-gap);
+    var(--digital-video-bottom-gap);
   background: #0c0c0f;
 }
 
 /* Digital 详情：filmstrip 与视频块无缝衔接 */
 .project-detail--digital .project-detail__filmstrip {
+  --filmstrip-pad-y: 0;
+  --filmstrip-img-h: clamp(10.5rem, 27vh, 19rem);
   margin-bottom: 0;
-  padding-block: var(--filmstrip-pad-y);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.project-detail--digital .project-detail__filmstrip::before,
+.project-detail--digital .project-detail__filmstrip::after {
+  display: none;
 }
 
 .project-detail__digital-square-grid {
   --digital-square-inline-gap: clamp(2.75rem, 8vw, 5.5rem);
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(0.75rem, 2vw, 1.5rem);
   width: 100%;
   padding: clamp(0.75rem, 2.2vw, 1.5rem) var(--digital-square-inline-gap)
@@ -923,6 +951,32 @@ body {
 
 .project-detail__digital-square-grid--feature {
   padding-top: 0;
+  padding-bottom: var(--digital-section-bottom-gap, clamp(0.75rem, 2vw, 1.5rem));
+}
+
+.project-detail__digital-square-grid--factory {
+  padding-top: 0;
+}
+
+.project-detail__digital-feature-stack {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.project-detail__digital-factory-stack {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.project-detail__digital-feature-stack-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: clamp(1rem, 2.2vw, 1.75rem);
 }
 
 .project-detail__digital-square-card {
@@ -1177,9 +1231,28 @@ body {
   color: #ffffff;
 }
 
+.project-detail--weirui .project-detail__headline-line2 .project-detail__headline-line2-accent {
+  display: inline-block;
+  padding-right: 0.26em;
+  color: #ffffff;
+}
+
+.project-detail--weirui .project-detail__headline-line1 {
+  color: rgba(245, 245, 247, 0.72);
+}
+
+.project-detail--weirui .project-detail__headline-line2 {
+  margin-top: clamp(0.15rem, 0.45vw, 0.28rem);
+}
+
+.project-detail--weirui .project-detail__headline-copy {
+  margin-top: clamp(0.08rem, 0.32vw, 0.2rem);
+  color: #ffffff;
+}
+
 /* AIGC：首屏以下统一横向内边距（首屏 sticky-hero 不变） */
 .project-detail--aigc {
-  --aigc-inline-pad: clamp(2.75rem, 8vw, 5.5rem);
+  --aigc-inline-pad: 15vw;
   /* 与 black-rounded 内边距一致：文案/缩略图/对比区与数据集主图 .black-img 左右对齐 */
   --aigc-showcase-content-pad: clamp(1rem, 3vw, 2rem);
   /* fix-intro 大标题 / showcase-3 海报区主标题 等同级标题统一字号（取最大档） */
