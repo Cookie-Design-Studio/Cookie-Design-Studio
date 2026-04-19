@@ -19,6 +19,8 @@ type LanyardProps = {
   position?: [number, number, number];
   gravity?: [number, number, number];
   fov?: number;
+  modelOffsetX?: number;
+  modelOffsetY?: number;
   transparent?: boolean;
   cardModelSrc?: string;
   strapTextureSrc?: string;
@@ -29,13 +31,17 @@ export function Lanyard({
   position = [0, 0, 11.5],
   gravity = [0, -30, 0],
   fov = 20,
+  modelOffsetX = 0,
+  modelOffsetY = 0,
   transparent = true,
   cardModelSrc = "/lanyard/card.glb",
   strapTextureSrc = "/lanyard/lanyard.png",
 }: LanyardProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.innerWidth < 768,
   );
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -43,25 +49,49 @@ export function Lanyard({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const target = sectionRef.current;
+    if (!target) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const isActive = active && isInView;
+
   return (
-    <section className="lanyard-section" aria-label="Lanyard">
+    <section ref={sectionRef} className="lanyard-section" aria-label="Lanyard">
       <div className="lanyard-wrapper">
         <div className="lanyard-back-hint" aria-hidden="true">
           Drag It！
         </div>
         <Canvas
-          frameloop={active ? "always" : "demand"}
+          frameloop={isActive ? "always" : "demand"}
           camera={{ position, fov }}
           dpr={[1, isMobile ? 1.5 : 2]}
+          style={{ width: "100%", height: "100%" }}
           gl={{ alpha: transparent }}
           onCreated={({ gl }) =>
             gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)
           }
         >
           <ambientLight intensity={Math.PI} />
-          <Physics paused={!active} gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics paused={!isActive} gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
             <Band
               isMobile={isMobile}
+              modelOffsetX={modelOffsetX}
+              modelOffsetY={modelOffsetY}
               cardModelSrc={cardModelSrc}
               strapTextureSrc={strapTextureSrc}
             />
@@ -106,6 +136,8 @@ type BandProps = {
   maxSpeed?: number;
   minSpeed?: number;
   isMobile?: boolean;
+  modelOffsetX?: number;
+  modelOffsetY?: number;
   cardModelSrc: string;
   strapTextureSrc: string;
 };
@@ -114,6 +146,8 @@ function Band({
   maxSpeed = 50,
   minSpeed = 0,
   isMobile = false,
+  modelOffsetX = 0,
+  modelOffsetY = 0,
   cardModelSrc,
   strapTextureSrc,
 }: BandProps) {
@@ -229,7 +263,7 @@ function Band({
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[modelOffsetX, 4 + modelOffsetY, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />

@@ -3,13 +3,18 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:ui": "npm run build -w @cookie-design-studio/ui",
     "preview": "vite preview",
     "preview:host": "vite preview --host --port 4173"
   },
   "dependencies": {
+    "@cookie-design-studio/ui": "workspace:*",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/rapier": "^2.2.0",

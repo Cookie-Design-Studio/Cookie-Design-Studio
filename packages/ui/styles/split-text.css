@@ -1,0 +1,19 @@
+/* SplitText（GSAP）基础结构，项目内可按区块覆写 */
+.split-parent {
+  overflow: hidden;
+}
+
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}

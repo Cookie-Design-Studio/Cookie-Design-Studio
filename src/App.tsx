@@ -14,15 +14,19 @@ import { CaseCardBgParallax } from "./components/CaseCardBgParallax";
 import { HeroIntroType } from "./components/HeroIntroType";
 import { HeroSplitTitle } from "./components/HeroSplitTitle";
 import { Lanyard } from "./components/Lanyard";
-import { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@cookie-design-studio/ui";
 import { gsap } from "./lib/gsapSetup";
 
-/** 更换 showreel 后递增版本号，规避视频缓存 */
+/** 更换 showreel 后递增版本号，规避视频缓存（请同步修改 index.html 里 showreel 的 preload 查询参数） */
 const HOME_VIDEO_REV = "4";
 /** 文字揭示阶段滚动距离：滚完后再离开首屏 */
 const HERO_REVEAL_SCROLL_PX = 760;
 /** 初始额外下移量：首屏先露出后两行 */
 const HERO_REVEAL_FROM_Y = 380;
+/** Contact 区域挂绳模型纵向偏移（正值向上） */
+const CONTACT_LANYARD_MODEL_OFFSET_Y = 0.6;
+/** Contact 区域挂绳模型横向偏移（正值向右） */
+const CONTACT_LANYARD_MODEL_OFFSET_X = -0.2;
 
 /** 跑马灯单行重复次数，避免轨道留白 */
 const CASE_SKILLS_SEGMENT_REPEAT = 14;
@@ -408,7 +412,11 @@ export default function App() {
               </span>
             </header>
             <div className="case-contact-lanyard">
-              <Lanyard cardModelSrc="/lanyard/card1.glb" />
+              <Lanyard
+                cardModelSrc="/lanyard/card1.glb"
+                modelOffsetX={CONTACT_LANYARD_MODEL_OFFSET_X}
+                modelOffsetY={CONTACT_LANYARD_MODEL_OFFSET_Y}
+              />
             </div>
           </div>
         </section>

@@ -69,12 +69,6 @@ html *::after {
   text-shadow: none !important;
 }
 
-/* 与 .case-work-bar__title（Works）一致的全局字距基准 */
-:root {
-  --site-letter-spacing: -0.058em;
-  --surface-light: #ececee;
-}
-
 /* 滚动条显隐时保留槽位，避免 Lenis stop 后滚动条消失导致视口变宽、底图与叠层错位 */
 html {
   scrollbar-gutter: stable;
@@ -89,7 +83,7 @@ body {
   overflow-x: hidden;
   font-family: "Scto Grotesk A", sans-serif;
   letter-spacing: var(--site-letter-spacing);
-  background: #0c0c0f;
+  background: var(--site-bg);
   color: #0c0c0f;
 }
 
@@ -98,36 +92,13 @@ body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  background: #0c0c0f;
+  background: var(--site-bg);
 }
 
 #top {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-}
-
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2rem;
-  background: transparent;
-  pointer-events: none;
-}
-
-.site-logo {
-  display: inline-block;
-  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
-  font-weight: 600;
-  letter-spacing: var(--site-letter-spacing);
-  color: #f5f5f7;
-  text-decoration: none;
 }
 
 .site-main {
@@ -663,10 +634,12 @@ body {
 .lanyard-wrapper {
   position: relative;
   width: 100%;
+  height: calc(100vh - clamp(2rem, 5vw, 4rem));
+  height: calc(100svh - clamp(2rem, 5vw, 4rem));
+  height: calc(100dvh - clamp(2rem, 5vw, 4rem));
   min-height: calc(100vh - clamp(2rem, 5vw, 4rem));
   min-height: calc(100svh - clamp(2rem, 5vw, 4rem));
   min-height: calc(100dvh - clamp(2rem, 5vw, 4rem));
-  height: auto;
   margin: 0 auto;
   border-radius: 1.25rem;
   background: radial-gradient(circle at 50% 40%, #1a1a1f 0%, #0c0c0f 68%);
@@ -698,15 +671,21 @@ body {
   display: block;
 }
 
+.lanyard-wrapper > div,
+.lanyard-wrapper > div > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @media (max-width: 640px) {
   .case-contact-lanyard {
     padding-left: 1rem;
     padding-right: 1rem;
+    min-height: 100dvh;
   }
 
   .lanyard-wrapper {
-    min-height: calc(100vh - 2rem);
-    min-height: calc(100svh - 2rem);
+    height: calc(100dvh - 2rem);
     min-height: calc(100dvh - 2rem);
   }
 }
@@ -717,11 +696,13 @@ body {
   }
 
   .lanyard-wrapper {
+    height: calc(-webkit-fill-available - clamp(2rem, 5vw, 4rem));
     min-height: calc(-webkit-fill-available - clamp(2rem, 5vw, 4rem));
   }
 
   @media (max-width: 640px) {
     .lanyard-wrapper {
+      height: calc(-webkit-fill-available - 2rem);
       min-height: calc(-webkit-fill-available - 2rem);
     }
   }
@@ -777,13 +758,6 @@ body {
   --digital-total-inline-pad: calc(var(--digital-inline-pad) + var(--digital-content-pad));
 }
 
-.project-detail--digital .case-work-bar {
-  --case-work-bar-inline: var(--digital-total-inline-pad);
-  /* 详情页标题条在窄屏下单独降一档，避免英文标题换行 */
-  --case-work-bar-title-size: clamp(2.1rem, 0.95rem + 6.4vw, 4.5rem);
-  gap: clamp(0.6rem, 1.8vw, 1.25rem);
-}
-
 .project-detail--digital .project-detail__digital-video-block {
   --digital-video-inline-gap: var(--digital-total-inline-pad);
 }
@@ -792,16 +766,102 @@ body {
   --digital-square-inline-gap: var(--digital-total-inline-pad);
 }
 
-.project-detail--digital .case-work-bar__title {
-  flex: 1 1 auto;
-  min-width: 0;
+/* Digital：模块标题条下方短说明，与主内容区左右对齐；块内保留均衡上下内边距 */
+.project-detail--digital .project-detail__case-lede {
+  --case-lede-pad-y: clamp(0.85rem, 2.1vw, 1.45rem);
+  margin: 0;
+  padding: var(--case-lede-pad-y) var(--digital-total-inline-pad);
+  box-sizing: border-box;
+  width: 100%;
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.22rem);
+  font-weight: 400;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.62;
+  color: rgba(245, 245, 247, 0.78);
+  text-wrap: pretty;
+  background: #0c0c0f;
+}
+
+/* Factory Floor：标题条与下方浅色网格一致 */
+.project-detail--digital .project-detail__case-lede--on-light {
+  background: var(--surface-light);
+  color: rgba(12, 12, 15, 0.82);
+}
+
+/* Digital：标题与说明并入视频区块顶部（Basic / Assembly 等），与原 case-work-bar 顶距一致 */
+.project-detail--digital .project-detail__digital-video-block--with-module-intro {
+  --digital-video-top-gap: clamp(2.35rem, 6.25vw, 4.75rem);
+}
+
+/* Assembly Line：video-card 直接作为 section 子节点（无 video-stack），间距对齐 .project-detail__video-stack */
+.project-detail--digital .project-detail__digital-video-block--assembly-line {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.project-detail--digital
+  .project-detail__digital-video-block--assembly-line
+  .project-detail__digital-module-copy {
+  margin-bottom: 0;
+}
+
+/*
+ * Assembly Line：全局 .video-card-inner / .project-detail__video 使用 pointer-events: none，
+ * 点击会穿透到整块 section，DevTools/设计工具无法单独选中每张卡；此处恢复命中区。
+ * 视频仍无 controls；user-select: none 保留。
+ */
+.project-detail--digital
+  .project-detail__digital-video-block--assembly-line
+  .project-detail__video-card-inner,
+.project-detail--digital
+  .project-detail__digital-video-block--assembly-line
+  .project-detail__video {
+  pointer-events: auto;
+}
+
+.project-detail--digital .project-detail__digital-module-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.65rem, 1.6vw, 1rem);
+  width: 100%;
+  margin-bottom: clamp(0.85rem, 2.1vw, 1.45rem);
+}
+
+.project-detail--digital .project-detail__digital-module-title {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(2.1rem, 0.95rem + 6.4vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: var(--site-letter-spacing);
+  line-height: 1.1;
+  color: #f5f5f7;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.project-detail--digital .case-work-bar__arrow-wrap {
-  flex: 0 0 auto;
+.project-detail--digital .project-detail__digital-module-title--on-light {
+  color: #0c0c0f;
+}
+
+/* Feature / Factory：标题与说明并入方格区顶部 */
+.project-detail--digital .project-detail__digital-square-grid--with-module-copy {
+  padding-top: clamp(2.35rem, 6.25vw, 4.75rem);
+}
+
+.project-detail--digital
+  .project-detail__digital-square-grid--with-module-copy
+  .project-detail__digital-module-copy {
+  grid-column: 1 / -1;
+}
+
+.project-detail--digital .project-detail__case-lede--embedded {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
 }
 
 /*
@@ -932,9 +992,23 @@ body {
 .project-detail--digital .project-detail__filmstrip {
   --filmstrip-pad-y: 0;
   --filmstrip-img-h: clamp(10.5rem, 27vh, 19rem);
+  /* 关闭外层 1.5× 缩放，避免图片被 overflow 裁切 */
+  --filmstrip-scale: 1;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.project-detail--digital .project-detail__filmstrip-marquee,
+.project-detail--digital .project-detail__filmstrip-track {
+  align-items: center;
+}
+
+/* 去掉单图 1.1× 缩放 + 居中，完整显示在条带高度内（object-fit: contain） */
+.project-detail--digital .project-detail__filmstrip-img {
+  transform: none;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .project-detail--digital .project-detail__filmstrip::before,
@@ -1050,8 +1124,8 @@ body {
   min-height: 0;
   height: auto;
   border-radius: clamp(1rem, 2.2vw, 1.75rem);
-  border: 1px solid rgba(245, 245, 247, 0.32);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  border: none;
+  box-shadow: none;
   overflow: hidden;
   background: #000000;
   pointer-events: none;
@@ -1272,13 +1346,12 @@ body {
   --aigc-overview-y-gap: clamp(2.2rem, 5.2vw, 3.8rem);
   box-sizing: border-box;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
-  padding: clamp(1.25rem, 3vw, 2rem) var(--aigc-inline-pad);
+  padding: clamp(2.5rem, 6vw, 4rem) var(--aigc-inline-pad)
+    clamp(2.5rem, 6vw, 4rem);
   background: #0c0c0f;
 }
 
@@ -1430,7 +1503,7 @@ body {
   }
 
   .aigc-fix-intro__detail-thumb:hover {
-    border-color: rgba(146, 159, 175, 0.55);
+    filter: none;
   }
 }
 
@@ -1984,16 +2057,80 @@ body {
   margin-top: clamp(0.85rem, 2vw, 1.6rem);
 }
 
-.aigc-process-showcase > .aigc-fix-intro + .aigc-process-showcase__item {
+.aigc-process-showcase > .aigc-fix-detail + .aigc-process-showcase__item {
   margin-top: clamp(2rem, 5vw, 3.75rem);
 }
 
-.aigc-fix-intro > .aigc-process-showcase__black-rounded {
-  margin-top: clamp(1rem, 2.2vw, 1.5rem);
+/* Repair reference：与 #aigc-showcase-1 内 white-block 同宽（父级 .aigc-process-showcase 已含 aigc-inline-pad，勿重复内边距） */
+.aigc-fix-dataset-ref {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: clamp(1rem, 2.2vw, 1.75rem);
 }
 
-.aigc-fix-intro > .aigc-fix-intro__single + .aigc-process-showcase__black-rounded {
-  margin-top: clamp(1.35rem, 3vw, 2rem);
+.aigc-fix-dataset-ref .aigc-process-showcase__black-rounded {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 详情主图 + 缩略条：section 仅作语义包裹，不占布局（无额外底色/内边距） */
+.aigc-fix-detail {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.aigc-fix-detail > .aigc-process-showcase__black-rounded {
+  margin-top: clamp(1rem, 2.2vw, 1.75rem);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Detail 区块：主图左 + 缩略图右列等高 */
+.aigc-fix-detail__layout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: clamp(0.45rem, 1.1vw, 0.75rem);
+  min-height: 0;
+}
+
+.aigc-fix-detail .aigc-fix-intro__detail-media.aigc-process-showcase__black-media {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+  margin-top: 0;
+  aspect-ratio: 908 / 505;
+  position: relative;
+}
+
+.aigc-fix-detail .aigc-fix-intro__detail-thumbs {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 clamp(3.25rem, 8.5vw, 5rem);
+  width: clamp(3.25rem, 8.5vw, 5rem);
+  margin-top: 0;
+  gap: clamp(0.2rem, 0.45vw, 0.38rem);
+  min-height: 0;
+  align-self: stretch;
+}
+
+.aigc-fix-detail .aigc-fix-intro__detail-thumb {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+}
+
+.aigc-fix-detail .aigc-fix-intro__detail-thumb-img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* 主图区高度按 detail-3（908×505）比例锁定，其余 detail 图 cover 裁切 */
@@ -2024,21 +2161,21 @@ body {
 .aigc-fix-intro__detail-thumb {
   display: block;
   padding: 0;
-  border: 2px solid rgba(146, 159, 175, 0.55);
+  border: none;
   border-radius: clamp(0.35rem, 0.9vw, 0.55rem);
   background: transparent;
   cursor: default;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
-  transition: border-color 0.2s ease;
+  transition: background-color 0.2s ease, filter 0.2s ease;
 }
 
 .aigc-fix-intro__detail-thumb:hover {
-  border-color: #ff8d28;
+  filter: brightness(1.06);
 }
 
 .aigc-fix-intro__detail-thumb--current {
-  border-color: #ff8d28;
+  filter: brightness(1.1);
 }
 
 .aigc-fix-intro__detail-thumb-img {
@@ -2084,7 +2221,7 @@ body {
 
 .aigc-fix-intro__tag {
   position: absolute;
-  top: clamp(0.85rem, 1.9vw, 1.35rem);
+  top: clamp(1.25rem, 2.4vw, 1.85rem);
   left: clamp(0.85rem, 1.9vw, 1.35rem);
   z-index: 2;
   margin: 0;
@@ -2109,8 +2246,13 @@ body {
 
 .aigc-fix-intro__single {
   margin-top: clamp(0.85rem, 2vw, 1.35rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.65rem, 1.5vw, 1.1rem);
+}
+
+.aigc-fix-intro__single > .aigc-fix-intro__img {
   border-radius: clamp(0.9rem, 2vw, 1.45rem);
-  overflow: hidden;
 }
 
 .aigc-process-showcase__nav {
@@ -2221,24 +2363,43 @@ body {
   will-change: transform, opacity;
 }
 
-/* ========== SplitText Animation Styles ========== */
-.split-parent {
-  overflow: hidden;
-}
+@media (max-width: 640px) {
+  .project-detail--digital .project-detail__headline {
+    align-items: center;
+    text-align: center;
+  }
 
-.split-line {
-  display: block;
-  overflow: hidden;
-}
+  .project-detail--digital .project-detail__headline-line2 {
+    text-align: center !important;
+  }
 
-.split-word {
-  display: inline-block;
-  white-space: nowrap;
-}
+  .project-detail--aigc .project-detail__headline {
+    align-items: center;
+    text-align: center;
+  }
 
-.split-char {
-  display: inline-block;
-  will-change: transform, opacity;
+  .project-detail--aigc .project-detail__headline-line2 {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .project-detail--aigc .project-detail__headline-line2 .split-parent {
+    display: block !important;
+    margin-inline: auto;
+    text-align: center !important;
+  }
+
+  .project-detail--aigc
+    .project-detail__headline-line2
+    .split-parent:not(.project-detail__headline-line2-accent) {
+    max-width: 10ch;
+    white-space: normal !important;
+  }
+
+  .project-detail--aigc .project-detail__headline-line2 .project-detail__headline-line2-accent {
+    padding-right: 0;
+  }
 }
 
 .project-detail__close {

@@ -1,0 +1,22 @@
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: transparent;
+  pointer-events: none;
+}
+
+.site-logo {
+  display: inline-block;
+  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: var(--site-letter-spacing);
+  color: var(--site-text-on-dark);
+  text-decoration: none;
+}

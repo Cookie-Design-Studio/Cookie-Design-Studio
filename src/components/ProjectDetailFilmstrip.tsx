@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { usePrefersReducedMotion } from "@cookie-design-studio/ui";
 
 /** Digital 案例长图：三张横拼，无缝循环（整组重复拼接两次保证无限循环） */
 const DIGITAL_FILM_IMAGES = [

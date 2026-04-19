@@ -16,7 +16,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@cookie-design-studio/ui": ["./packages/ui/src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "packages/ui/src"]
 }

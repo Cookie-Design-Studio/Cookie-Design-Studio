@@ -1,5 +1,5 @@
 import { ProjectDetailOverlay } from "./ProjectDetailOverlay";
-import { SplitText } from "./SplitText";
+import { SplitText } from "@cookie-design-studio/ui";
 
 type WeiruiDetailOverlayProps = {
   open: boolean;

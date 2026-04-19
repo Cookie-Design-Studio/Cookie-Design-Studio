@@ -1,0 +1,10 @@
+/**
+ * 设计 token：在应用入口先于页面级 CSS 引入。
+ * 新页面请优先使用这些变量，避免再写散落色值。
+ */
+:root {
+  --site-letter-spacing: -0.058em;
+  --surface-light: #ececee;
+  --site-bg: #0c0c0f;
+  --site-text-on-dark: #f5f5f7;
+}

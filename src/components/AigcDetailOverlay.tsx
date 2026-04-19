@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { ProjectDetailOverlay } from "./ProjectDetailOverlay";
-import { SplitText } from "./SplitText";
+import { SplitText } from "@cookie-design-studio/ui";
 
 type AigcDetailOverlayProps = {
   open: boolean;
@@ -508,7 +508,13 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
           </div>
           <div className="aigc-fix-intro__single" aria-hidden="true">
             <img className="aigc-fix-intro__img" src="/aigc/fix-4.png" alt="" />
+            <img className="aigc-fix-intro__img" src="/aigc/fix-4-1.png" alt="" />
           </div>
+        </section>
+        <section
+          className="aigc-fix-dataset-ref"
+          aria-label="Repair reference dataset"
+        >
           <div className="aigc-process-showcase__black-rounded">
             <div className="aigc-process-showcase__black-heading">
               <p className="aigc-process-showcase__black-line1">
@@ -524,19 +530,22 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
               />
             </div>
           </div>
+        </section>
+        <section className="aigc-fix-detail" aria-label="Detail repair gallery">
           <div className="aigc-process-showcase__black-rounded">
-            <div className="aigc-process-showcase__black-media aigc-fix-intro__detail-media">
-              <img
-                className="aigc-process-showcase__black-img"
-                src={DETAIL_IMAGES[detailImageIndex]}
-                alt=""
-              />
-            </div>
-            <div
-              className="aigc-fix-intro__detail-thumbs"
-              role="tablist"
-              aria-label="Select detail image"
-            >
+            <div className="aigc-fix-detail__layout">
+              <div className="aigc-process-showcase__black-media aigc-fix-intro__detail-media">
+                <img
+                  className="aigc-process-showcase__black-img"
+                  src={DETAIL_IMAGES[detailImageIndex]}
+                  alt=""
+                />
+              </div>
+              <div
+                className="aigc-fix-intro__detail-thumbs"
+                role="tablist"
+                aria-label="Select detail image"
+              >
               {DETAIL_IMAGES.map((src, i) => (
                 <button
                   key={src}
@@ -556,6 +565,7 @@ export function AigcDetailOverlay({ open, onClose }: AigcDetailOverlayProps) {
                   <img className="aigc-fix-intro__detail-thumb-img" src={src} alt="" />
                 </button>
               ))}
+              </div>
             </div>
           </div>
         </section>

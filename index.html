@@ -4,6 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cookie Design Studio</title>
+    <!-- 与 App.tsx 中 HOME_VIDEO_REV 同步：尽早并行拉取首屏背景视频，利于打开即流畅播放 -->
+    <link
+      rel="preload"
+      href="/videos/showreel.mp4?v=4"
+      as="video"
+      type="video/mp4"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <div id="root"></div>
