@@ -1,440 +1,218 @@
-import {
-  type RefObject,
-  Suspense,
-  lazy,
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useLayoutEffect, useRef } from "react";
 
-import { CaseCardBgParallax } from "./components/CaseCardBgParallax";
-import { HeroIntroType } from "./components/HeroIntroType";
-import { HeroSplitTitle } from "./components/HeroSplitTitle";
-import { Lanyard } from "./components/Lanyard";
 import { usePrefersReducedMotion } from "@cookie-design-studio/ui";
 import { gsap } from "./lib/gsapSetup";
 
-/** 更换 showreel 后递增版本号，规避视频缓存（请同步修改 index.html 里 showreel 的 preload 查询参数） */
-const HOME_VIDEO_REV = "4";
-/** 文字揭示阶段滚动距离：滚完后再离开首屏 */
-const HERO_REVEAL_SCROLL_PX = 760;
-/** 初始额外下移量：首屏先露出后两行 */
-const HERO_REVEAL_FROM_Y = 380;
-/** Contact 区域挂绳模型纵向偏移（正值向上） */
-const CONTACT_LANYARD_MODEL_OFFSET_Y = 0.6;
-/** Contact 区域挂绳模型横向偏移（正值向右） */
-const CONTACT_LANYARD_MODEL_OFFSET_X = -0.2;
-
-/** 跑马灯单行重复次数，避免轨道留白 */
-const CASE_SKILLS_SEGMENT_REPEAT = 14;
-const CASE_SKILLS_LINES = [
-  { text: "Diffusion LoRA ControlNet", baseSpeedPx: 0.55, direction: -1 },
-  { text: "Motion Brand Systems Real-time", baseSpeedPx: 0.46, direction: 1 },
-  { text: "Multimodal Neural Interactive", baseSpeedPx: 0.4, direction: -1 },
+const projects = [
+  {
+    id: "01",
+    title: "Digital Twin Command",
+    meta: "Spatial intelligence / Operations",
+    year: "2026",
+    summary:
+      "Campus, production line, and equipment data are rebuilt as readable 3D operation rooms for decision teams.",
+  },
+  {
+    id: "02",
+    title: "AIGC Brand Engine",
+    meta: "Generative content / Motion system",
+    year: "2026",
+    summary:
+      "A compact model-to-production workflow for brand visuals, campaign keyframes, and interactive launches.",
+  },
+  {
+    id: "03",
+    title: "Factory Vision Wall",
+    meta: "Realtime dashboard / Data storytelling",
+    year: "2025",
+    summary:
+      "Large-screen visualization that turns throughput, quality, and line status into one calm shared view.",
+  },
 ] as const;
 
-const AigcDetailOverlay = lazy(() =>
-  import("./components/AigcDetailOverlay").then((m) => ({
-    default: m.AigcDetailOverlay,
-  })),
-);
+const capabilityGroups = [
+  {
+    title: "Strategy",
+    items: ["Product narrative", "Experience mapping", "Launch storytelling", "Creative direction"],
+  },
+  {
+    title: "Interface",
+    items: ["React", "TypeScript", "Design systems", "Responsive motion"],
+  },
+  {
+    title: "Motion & 3D",
+    items: ["GSAP", "Lenis", "Three.js", "Realtime scenes"],
+  },
+  {
+    title: "AI Production",
+    items: ["AIGC workflow", "Model direction", "Asset pipelines", "Visual QA"],
+  },
+] as const;
 
-const DigitalTwinDetailOverlay = lazy(() =>
-  import("./components/DigitalTwinDetailOverlay").then((m) => ({
-    default: m.DigitalTwinDetailOverlay,
-  })),
-);
-
-const WeiruiDetailOverlay = lazy(() =>
-  import("./components/WeiruiDetailOverlay").then((m) => ({
-    default: m.WeiruiDetailOverlay,
-  })),
-);
-
-const CaseSkillsMarqueeLine = memo(function CaseSkillsMarqueeLine({
-  text,
-  baseSpeedPx,
-  direction,
-}: {
-  text: string;
-  baseSpeedPx: number;
-  direction: 1 | -1;
-}) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const segment = Array.from({ length: CASE_SKILLS_SEGMENT_REPEAT }, () => text).join(
-    "   ",
-  );
-
-  useEffect(() => {
-    const wrap = wrapRef.current;
-    const track = trackRef.current;
-    if (!wrap || !track) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      track.style.transform = "translate3d(0, 0, 0)";
-      return;
-    }
-
-    let rafId = 0;
-    let posX = 0;
-    let boost = 0;
-    let lastY = window.scrollY;
-    let lastTime = performance.now();
-
-    const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
-    const lerp = (from: number, to: number, t: number) => from + (to - from) * t;
-
-    const step = (now: number) => {
-      const dt = Math.min(2, (now - lastTime) / 16.67);
-      lastTime = now;
-
-      const currentY = window.scrollY;
-      const dy = currentY - lastY;
-      lastY = currentY;
-
-      const targetBoost = clamp(dy * 0.35, -14, 14);
-      boost = lerp(boost, targetBoost, 0.16);
-
-      posX += (direction * baseSpeedPx + boost) * dt;
-
-      const segWidth = track.scrollWidth / 2;
-      if (segWidth > 0) {
-        if (posX <= -segWidth) posX += segWidth;
-        if (posX >= 0) posX -= segWidth;
-      }
-
-      track.style.transform = `translate3d(${posX}px, 0, 0)`;
-      rafId = requestAnimationFrame(step);
-    };
-
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, [baseSpeedPx, direction]);
-
-  return (
-    <div className="case-skills__marquee" aria-hidden="true">
-      <div ref={wrapRef} className="case-skills__shift">
-        <div ref={trackRef} className="case-skills__track">
-          <div className="case-skills__chunk">{segment}</div>
-          <div className="case-skills__chunk">{segment}</div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-/**
- * 首屏 showreel：标记 `loop` + 个别环境下 `ended` 兜底（Safari 等）。
- */
-function useHeroShowreelLoop(videoRef: RefObject<HTMLVideoElement | null>) {
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    v.loop = true;
-
-    const restart = () => {
-      requestAnimationFrame(() => {
-        try {
-          v.currentTime = 0;
-        } catch {
-          /* ignore */
-        }
-        const p = v.play();
-        if (p !== undefined) void p.catch(() => {});
-      });
-    };
-
-    v.addEventListener("ended", restart);
-    return () => v.removeEventListener("ended", restart);
-  }, [videoRef]);
-}
+const studioFacts = [
+  ["03", "flagship case studies"],
+  ["AI", "native creative workflow"],
+  ["3D", "spatial product storytelling"],
+  ["360", "iteration from concept to launch"],
+] as const;
 
 export default function App() {
   const mainRef = useRef<HTMLElement>(null);
-  const heroVideoRef = useRef<HTMLVideoElement>(null);
-  const [aigcDetailOpen, setAigcDetailOpen] = useState(false);
-  const [digitalTwinDetailOpen, setDigitalTwinDetailOpen] = useState(false);
-  const [weiruiDetailOpen, setWeiruiDetailOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const closeAigcDetail = useCallback(() => setAigcDetailOpen(false), []);
-  const closeDigitalTwinDetail = useCallback(
-    () => setDigitalTwinDetailOpen(false),
-    [],
-  );
-  const closeWeiruiDetail = useCallback(() => setWeiruiDetailOpen(false), []);
-  const openDigitalTwinDetail = useCallback(() => {
-    setAigcDetailOpen(false);
-    setWeiruiDetailOpen(false);
-    setDigitalTwinDetailOpen(true);
-  }, []);
-  const openAigcDetail = useCallback(() => {
-    setDigitalTwinDetailOpen(false);
-    setWeiruiDetailOpen(false);
-    setAigcDetailOpen(true);
-  }, []);
-  const openWeiruiDetail = useCallback(() => {
-    setDigitalTwinDetailOpen(false);
-    setAigcDetailOpen(false);
-    setWeiruiDetailOpen(true);
-  }, []);
-  useHeroShowreelLoop(heroVideoRef);
 
   useLayoutEffect(() => {
     const main = mainRef.current;
     if (!main || prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      const hero = main.querySelector<HTMLElement>(".hero");
-      const heroTextTrack = main.querySelector<HTMLElement>(".hero-text__track");
-      if (!hero || !heroTextTrack) return;
+      gsap.from(".portfolio-hero__eyebrow, .portfolio-hero__title-line, .portfolio-hero__copy", {
+        y: 42,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.08,
+      });
 
-      // Pin entire hero section so the whole thing (video + text) moves together
-      // Pin spacing handled by GSAP to avoid卡顿 when scrolling back
-      gsap.fromTo(
-        heroTextTrack,
-        { y: HERO_REVEAL_FROM_Y },
-        {
-          y: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: `+=${HERO_REVEAL_SCROLL_PX}`,
-            scrub: true,
-            pin: hero,
-            pinSpacing: true,
-            pinType: "transform",
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            fastScrollEnd: false,
-          },
-        },
-      );
+      gsap.utils
+        .toArray<HTMLElement>(".portfolio-reveal")
+        .forEach((el) => {
+          gsap.from(el, {
+            y: 48,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 82%",
+              once: true,
+            },
+          });
+        });
     }, main);
 
     return () => ctx.revert();
   }, [prefersReducedMotion]);
 
   return (
-    <div id="top">
-      <main ref={mainRef} className="site-main">
-        <CaseCardBgParallax rootRef={mainRef} />
-        <section className="hero" aria-label="Introduction">
-          <div className="hero-stage">
-            <div className="hero-bg" aria-hidden>
-              <video
-                ref={heroVideoRef}
-                className="hero-bg__video"
-                preload="auto"
-                autoPlay
-                muted
-                loop
-                playsInline
-                disablePictureInPicture
-                onCanPlay={(e) => {
-                  const v = e.currentTarget;
-                  if (!v.paused) return;
-                  void v.play().catch(() => {});
-                }}
-              >
-                <source
-                  src={`/videos/showreel.mp4?v=${HOME_VIDEO_REV}`}
-                  type="video/mp4"
-                />
-              </video>
-            </div>
-            <div className="hero-text">
-              <div className="hero-text__track">
-                <div className="hero-content">
-                  <HeroSplitTitle reducedMotion={prefersReducedMotion} />
-                  <HeroIntroType reducedMotion={prefersReducedMotion} />
+    <div id="top" className="portfolio-shell">
+      <header className="portfolio-header" aria-label="Site header">
+        <a className="portfolio-header__brand" href="#top" aria-label="Cookie Design Studio home">
+          Cookie Design Studio
+        </a>
+        <nav className="portfolio-header__nav" aria-label="Primary navigation">
+          <a href="#work">Work</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main ref={mainRef} className="portfolio-main">
+        <section className="portfolio-hero" aria-labelledby="portfolio-hero-title">
+          <div className="portfolio-hero__grid" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="portfolio-hero__content">
+            <p className="portfolio-hero__eyebrow">Creative AI studio / Digital intelligence</p>
+            <h1 id="portfolio-hero-title" className="portfolio-hero__title">
+              <span className="portfolio-hero__title-line">We build calm</span>
+              <span className="portfolio-hero__title-line">digital systems</span>
+              <span className="portfolio-hero__title-line">for ambitious teams.</span>
+            </h1>
+            <p className="portfolio-hero__copy">
+              Cookie Design Studio turns complex operations, AI content workflows, and spatial
+              products into memorable websites, dashboards, and launch experiences.
+            </p>
+          </div>
+          <aside className="portfolio-hero__panel portfolio-reveal" aria-label="Studio snapshot">
+            <span className="portfolio-hero__panel-mark">CDS</span>
+            <p>
+              Original visual direction inspired by precise portfolio rhythm, rebuilt for your own
+              brand, cases, and production assets.
+            </p>
+          </aside>
+        </section>
+
+        <section className="portfolio-intro portfolio-reveal" aria-label="Studio introduction">
+          <p className="portfolio-intro__lead">
+            Basically, we make intelligent brand experiences feel simple.
+          </p>
+          <p className="portfolio-intro__copy">
+            From first concept to production rollout, the studio connects strategy, interface,
+            motion, 3D, and generative tooling into one coherent digital presence.
+          </p>
+        </section>
+
+        <section id="work" className="portfolio-section portfolio-work" aria-labelledby="work-title">
+          <div className="portfolio-section__head portfolio-reveal">
+            <p className="portfolio-section__kicker">Selected work</p>
+            <h2 id="work-title">Projects designed to explain complex systems at a glance.</h2>
+          </div>
+          <div className="portfolio-work__list">
+            {projects.map((project) => (
+              <article key={project.id} className="portfolio-work__item portfolio-reveal">
+                <div className="portfolio-work__index">{project.id}</div>
+                <div className="portfolio-work__body">
+                  <p className="portfolio-work__meta">{project.meta}</p>
+                  <h3>{project.title}</h3>
+                  <p>{project.summary}</p>
                 </div>
-              </div>
-            </div>
+                <div className="portfolio-work__year">{project.year}</div>
+              </article>
+            ))}
           </div>
         </section>
 
-        <section className="case-cards" aria-label="Featured works" lang="en">
-          <div className="case-cards__inner">
-            <header className="case-work-bar">
-              <h2 className="case-work-bar__title">Works</h2>
-              <span className="case-work-bar__arrow-wrap" aria-hidden="true">
-                <span className="case-work-bar__arrow">{"\u2B07"}</span>
-              </span>
-            </header>
-            <article
-              className="case-card case-card--on-dark case-card--dt"
-              aria-labelledby="case-card-dt-title"
-            >
-              <div className="case-card__bg" aria-hidden="true">
-                <img
-                  className="case-card__bg-img"
-                  src="/img/home-1.png"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="case-card__content">
-                <div className="case-card__intro">
-                  <p className="case-card__line case-card__line--meta">
-                    Digital Twin · Spatial Intelligence
-                  </p>
-                  <p id="case-card-dt-title" className="case-card__line case-card__line--lead">
-                    We map campuses, production lines, and equipment into interactive 3D
-                    twins—connecting live data with simulation and predictive operations.
-                  </p>
-                </div>
-                <a
-                  className="case-card__cta case-card__cta--light"
-                  href="#digital-twin"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openDigitalTwinDetail();
-                  }}
-                >
-                  <span className="case-card__cta-label">View project</span>
-                  <span className="case-card__cta-arrow" aria-hidden>
-                    →
-                  </span>
-                </a>
-              </div>
-            </article>
-            <article
-              className="case-card case-card--on-dark case-card--aigc"
-              aria-labelledby="case-card-aigc-title"
-            >
-              <div className="case-card__bg" aria-hidden="true">
-                <img
-                  className="case-card__bg-img"
-                  src="/img/home-2.png"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="case-card__content">
-                <div className="case-card__intro">
-                  <p className="case-card__line case-card__line--meta">
-                    AIGC · Generative Content
-                  </p>
-                  <p id="case-card-aigc-title" className="case-card__line case-card__line--lead">
-                    Multimodal models for end-to-end production of brand visuals, motion,
-                    and interactive experiences.
-                  </p>
-                </div>
-                <a
-                  className="case-card__cta case-card__cta--light"
-                  href="#aigc"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openAigcDetail();
-                  }}
-                >
-                  <span className="case-card__cta-label">View project</span>
-                  <span className="case-card__cta-arrow" aria-hidden>
-                    →
-                  </span>
-                </a>
-              </div>
-            </article>
-
-            <article
-              className="case-card case-card--on-dark case-card--aigc"
-              aria-labelledby="case-card-project-3-title"
-            >
-              <div className="case-card__bg" aria-hidden="true">
-                <img
-                  className="case-card__bg-img"
-                  src="/img/home-3.png"
-                  alt=""
-                  decoding="async"
-                  loading="lazy"
-                />
-              </div>
-              <div className="case-card__content">
-                <div className="case-card__intro">
-                  <p className="case-card__line case-card__line--meta">
-                    Weirui Factory · Operations Wall
-                  </p>
-                  <p id="case-card-project-3-title" className="case-card__line case-card__line--lead">
-                    Large-screen visualization for formation and grading workshops—live line
-                    status, throughput, and quality signals brought together so teams can read
-                    the plant at a glance.
-                  </p>
-                </div>
-                <a
-                  className="case-card__cta case-card__cta--light"
-                  href="#project-3"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openWeiruiDetail();
-                  }}
-                >
-                  <span className="case-card__cta-label">View project</span>
-                  <span className="case-card__cta-arrow" aria-hidden>
-                    →
-                  </span>
-                </a>
-              </div>
-            </article>
-
-            <div
-              className="case-skills"
-              lang="en"
-              aria-label="Capabilities and techniques"
-            >
-              {CASE_SKILLS_LINES.map((line) => (
-                <CaseSkillsMarqueeLine
-                  key={line.text}
-                  text={line.text}
-                  baseSpeedPx={line.baseSpeedPx}
-                  direction={line.direction}
-                />
-              ))}
+        <section className="portfolio-facts" aria-label="Studio highlights">
+          {studioFacts.map(([value, label]) => (
+            <div key={label} className="portfolio-facts__item portfolio-reveal">
+              <strong>{value}</strong>
+              <span>{label}</span>
             </div>
+          ))}
+        </section>
 
-            <header
-              className="case-work-bar case-work-bar--dark"
-              lang="en"
-              aria-labelledby="case-contact-bar-title"
-            >
-              <h2 id="case-contact-bar-title" className="case-work-bar__title">
-                Contact
-              </h2>
-              <span className="case-work-bar__arrow-wrap" aria-hidden="true">
-                <span className="case-work-bar__arrow">{"\u2B07"}</span>
-              </span>
-            </header>
-            <div className="case-contact-lanyard">
-              <Lanyard
-                cardModelSrc="/lanyard/card1.glb"
-                modelOffsetX={CONTACT_LANYARD_MODEL_OFFSET_X}
-                modelOffsetY={CONTACT_LANYARD_MODEL_OFFSET_Y}
-              />
-            </div>
+        <section
+          id="capabilities"
+          className="portfolio-section portfolio-capabilities"
+          aria-labelledby="capabilities-title"
+        >
+          <div className="portfolio-section__head portfolio-reveal">
+            <p className="portfolio-section__kicker">Capabilities</p>
+            <h2 id="capabilities-title">
+              A compact stack for strategy, craft, and technical execution.
+            </h2>
+          </div>
+          <div className="portfolio-capabilities__grid">
+            {capabilityGroups.map((group) => (
+              <article key={group.title} className="portfolio-capabilities__card portfolio-reveal">
+                <h3>{group.title}</h3>
+                <ul>
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="contact" className="portfolio-contact" aria-labelledby="contact-title">
+          <div className="portfolio-contact__inner portfolio-reveal">
+            <p className="portfolio-section__kicker">Contact</p>
+            <h2 id="contact-title">Ready to reshape your digital presence?</h2>
+            <p>
+              Bring a product, factory, campus, or AI workflow. We will turn it into a clear,
+              distinctive web experience that your team can keep evolving.
+            </p>
+            <a href="mailto:hello@cookie-design.studio" className="portfolio-contact__link">
+              hello@cookie-design.studio
+            </a>
           </div>
         </section>
       </main>
-      <Suspense fallback={null}>
-        {digitalTwinDetailOpen ? (
-          <DigitalTwinDetailOverlay
-            open={digitalTwinDetailOpen}
-            onClose={closeDigitalTwinDetail}
-          />
-        ) : null}
-        {aigcDetailOpen ? (
-          <AigcDetailOverlay open={aigcDetailOpen} onClose={closeAigcDetail} />
-        ) : null}
-        {weiruiDetailOpen ? (
-          <WeiruiDetailOverlay open={weiruiDetailOpen} onClose={closeWeiruiDetail} />
-        ) : null}
-      </Suspense>
     </div>
   );
 }
