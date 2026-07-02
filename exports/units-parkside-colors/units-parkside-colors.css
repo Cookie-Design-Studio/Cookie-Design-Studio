@@ -1,0 +1,24 @@
+/* Units Parkside — extracted color tokens */
+:root {
+  --units-gray: #F4E9E1;
+  --units-black: #000000;
+  --units-white: #FFFFFF;
+  --units-yellow: #FFB200;
+  --units-yellow-light: #FFDB08;
+  --units-orange: #FF5C38;
+  --units-orange-light: #FF8E0A;
+  --units-icon-orange: #FF6100;
+  --units-green: #00AA3C;
+  --units-green-light: #1BE349;
+  --units-animation-teal: #267E6E;
+  --units-purple: #C79DFC;
+  --units-purple-dark: #AB54F7;
+  --units-purple-darker: #6C2FAD;
+  --units-red: #EA3737;
+  --units-animation-red: #E6313A;
+  --units-blue: #0072E3;
+  --units-blue-dark: #004E9B;
+  --units-overlay-1: #FFB200;
+  --units-overlay-2: #E6313A;
+  --units-overlay-3: #267E6E;
+}
