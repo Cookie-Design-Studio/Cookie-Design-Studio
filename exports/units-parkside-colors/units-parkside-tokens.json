@@ -1,0 +1,154 @@
+{
+  "$metadata": {
+    "tokenSetOrder": [
+      "基础色",
+      "暖色系",
+      "绿色系",
+      "紫色系",
+      "红-/-蓝",
+      "页面切换动画三色"
+    ],
+    "source": "https://units.gr/en/unit/units-parkside/",
+    "extractedAt": "2026-07-02"
+  },
+  "global": {
+    "基础色": {
+      "background-gray": {
+        "value": "#F4E9E1",
+        "type": "color",
+        "$description": "页面底色 / 米灰 — body 全局背景",
+        "rgb": "rgb(244, 233, 225)"
+      },
+      "color-black": {
+        "value": "#000000",
+        "type": "color",
+        "$description": "黑色 — 主文字",
+        "rgb": "rgb(0, 0, 0)"
+      },
+      "background-white": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "$description": "白色 — 导航语言切换",
+        "rgb": "rgb(255, 255, 255)"
+      }
+    },
+    "暖色系": {
+      "background-yellow": {
+        "value": "#FFB200",
+        "type": "color",
+        "$description": "品牌黄 — 位置区 / rent 标签",
+        "rgb": "rgb(255, 178, 0)"
+      },
+      "background-yellow-light": {
+        "value": "#FFDB08",
+        "type": "color",
+        "$description": "浅黄 — 黄色辅助",
+        "rgb": "rgb(255, 219, 8)"
+      },
+      "background-orange": {
+        "value": "#FF5C38",
+        "type": "color",
+        "$description": "品牌橙 — 步行距离列表",
+        "rgb": "rgb(255, 92, 56)"
+      },
+      "background-orange-light": {
+        "value": "#FF8E0A",
+        "type": "color",
+        "$description": "浅橙 — 橙色辅助",
+        "rgb": "rgb(255, 142, 10)"
+      },
+      "icon-orange": {
+        "value": "#FF6100",
+        "type": "color",
+        "$description": "亮橙 — 页脚图标",
+        "rgb": "rgb(255, 97, 0)"
+      }
+    },
+    "绿色系": {
+      "background-green": {
+        "value": "#00AA3C",
+        "type": "color",
+        "$description": "品牌绿 — WhatsApp 图标",
+        "rgb": "rgb(0, 170, 60)"
+      },
+      "background-green-light": {
+        "value": "#1BE349",
+        "type": "color",
+        "$description": "亮绿 CTA — Book your Unit",
+        "rgb": "rgb(27, 227, 73)"
+      },
+      "animation-teal": {
+        "value": "#267E6E",
+        "type": "color",
+        "$description": "青绿动画 — 页面切换动画层 3",
+        "rgb": "rgb(38, 126, 110)"
+      }
+    },
+    "紫色系": {
+      "background-purple": {
+        "value": "#C79DFC",
+        "type": "color",
+        "$description": "浅紫 — 360 view 按钮",
+        "rgb": "rgb(199, 157, 252)"
+      },
+      "background-purple-dark": {
+        "value": "#AB54F7",
+        "type": "color",
+        "$description": "中紫 — 顶部预订按钮",
+        "rgb": "rgb(171, 84, 247)"
+      },
+      "background-purple-darker": {
+        "value": "#6C2FAD",
+        "type": "color",
+        "$description": "深紫 — 图标线条",
+        "rgb": "rgb(108, 47, 173)"
+      }
+    },
+    "红-/-蓝": {
+      "background-red": {
+        "value": "#EA3737",
+        "type": "color",
+        "$description": "品牌红 — 红色强调",
+        "rgb": "rgb(234, 55, 55)"
+      },
+      "animation-red": {
+        "value": "#E6313A",
+        "type": "color",
+        "$description": "动画红 — 页面切换动画层 2",
+        "rgb": "rgb(230, 49, 58)"
+      },
+      "background-blue": {
+        "value": "#0072E3",
+        "type": "color",
+        "$description": "蓝色 — 蓝色辅助",
+        "rgb": "rgb(0, 114, 227)"
+      },
+      "background-blue-dark": {
+        "value": "#004E9B",
+        "type": "color",
+        "$description": "深蓝 — Community 区块",
+        "rgb": "rgb(0, 78, 155)"
+      }
+    },
+    "页面切换动画三色": {
+      "overlay-1": {
+        "value": "#FFB200",
+        "type": "color",
+        "$description": "动画黄 — 动画层 1",
+        "rgb": "rgb(255, 178, 0)"
+      },
+      "overlay-2": {
+        "value": "#E6313A",
+        "type": "color",
+        "$description": "动画红 — 动画层 2",
+        "rgb": "rgb(230, 49, 58)"
+      },
+      "overlay-3": {
+        "value": "#267E6E",
+        "type": "color",
+        "$description": "动画青绿 — 动画层 3",
+        "rgb": "rgb(38, 126, 110)"
+      }
+    }
+  }
+}
